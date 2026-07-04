@@ -898,7 +898,7 @@
                         </div>
                     </div>
                 </div>
-                <!-- INPUT DATA PRODUCTION MRP -->
+               <!-- INPUT DATA PRODUCTION MRP -->
                 <div id="produksi_input" class="menu-page">
                     <div class="card-custom">
                         <h3 class="text-warning mb-4">
@@ -933,10 +933,7 @@
                     </div>
                     <!-- LIST PRODUKSI -->
                     <div class="card-custom">
-                        <div class="row mt-1">
-                            <h5 class="text-warning mb-3">
-                                Tabel Data Recipe Production
-                            </h5>
+                        <div class="row">
                             <div class="col-md-3">
                                 <label>Month</label>
                                 <select id="productionMonth" class="form-control" onchange="loadProductionListData()">
@@ -946,6 +943,11 @@
                                 <label>Year</label>
                                 <select id="productionYear" class="form-control" onchange="loadProductionListData()">
                                 </select>
+                            </div>
+                            <div class="row mt-1">
+                                <h5 class="text-warning mb-3">
+                                    Tabel Data Recipe Production
+                                </h5>
                             </div>
                         </div>
                         <table class="table table-dark table-striped">
@@ -999,7 +1001,9 @@
                                 </button>
                             </div>
                         </div>
-                        <!-- FILTER -->
+                    </div>
+                    <!-- FILTER -->
+                    <div class="card-custom">
                         <div class="row mb-4">
                             <div class="col-md-3">
                                 <label>Start Date</label>
