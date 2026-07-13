@@ -373,10 +373,10 @@
                 </a>
                 <div id="gudangSubMenu" style="display:none; padding-left:20px;">
                     <a href="#" onclick="showPage('uploadStockAwal')">
-                        - Upload Raw Material Stock
+                        - Upload Start Material Stock
                     </a>
                     <a href="#" onclick="showPage('uploadSO')">
-                        - Upload Stock Opname
+                        - Upload Last Material Stock
                     </a>
                     <a href="#" onclick="showPage('stockCardWarehouse')">
                         - Stock Card Warehouse
@@ -500,7 +500,7 @@
                     <!-- Forecast Produk -->
                     <div id="forecastproduk" class="menu-page">
                         <div class="card-custom">
-                            <h3 class="text-warning mb-3">
+                            <h3 class="text-warningmb-3">
                                 <i class="fa-solid fa-database"></i>
                                 Master Data
                             </h3>
@@ -518,18 +518,15 @@
                                 <div class="col-md-9">
                                     <label>Product Name</label>
                                     <input type="text" id="recipeProductName" class="form-control"
-                                        placeholder=" Input Product Name">
+                                        placeholder="Input Product Name">
                                 </div>
                             </div>
                             <hr>
                             <div class="row mt-3">
-                                <h5 class="text-warning mb-3">
-                                    Add Raw Materials
-                                </h5>
+                                <h5 class="text-warning mb-3">Add Raw Materials</h5>
                                 <div class="col-md-4">
                                     <label>Select Raw Material</label>
-                                    <select id="recipeMaterial" class="form-control">
-                                    </select>
+                                    <select id="recipeMaterial" class="form-control"></select>
                                 </div>
                                 <div class="col-md-2">
                                     <label>Weight</label>
@@ -537,8 +534,7 @@
                                 </div>
                                 <div class="col-md-2">
                                     <label>UOM/Unit</label>
-                                    <select id="recipeUnit" class="form-control">
-                                    </select>
+                                    <select id="recipeUnit" class="form-control"></select>
                                 </div>
                                 <div class="col-md-2">
                                     <label>Price</label>
@@ -551,13 +547,13 @@
                                     </button>
                                 </div>
                             </div>
-                            <table class="table table-dark table-striped mt-4">
-                                <div class="text-end mt-3">
-                                    <h5 class="text-warning">
-                                        Total Cost :
-                                        <span id="priceForecaseTotal">Rp 0</span>
-                                    </h5>
-                                </div>
+                            <div class="text-end mt-3">
+                                <h5 class="text-dark">
+                                    Total Cost :
+                                    <span id="priceForecaseTotal">Rp 0</span>
+                                </h5>
+                            </div>
+                            <table class="table table-dark table-striped mt-3">
                                 <thead>
                                     <tr>
                                         <th>Raw Material</th>
@@ -572,21 +568,24 @@
                             <button class="btn btn-success w-100 mt-3" onclick="saveRecipe()">
                                 Save Forecast Product
                             </button>
+                            <hr class="my-4">
+                            <h5 class="text-warning">
+                                <i class="fa-solid fa-table"></i>
+                                Data Forecast Product
+                            </h5>
+                            <table class="table table-dark table-striped mt-3">
+                                <thead>
+                                    <tr>
+                                        <th>Product Code</th>
+                                        <th>Product Name</th>
+                                        <th>Quantity</th>
+                                        <th>Total Cost</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="forecastList"></tbody>
+                            </table>
                         </div>
-                        <hr>
-                        <h5 class="mt-4 text-warning">Data Forecast Product</h5>
-                        <table class="table table-dark table-striped mt-2">
-                            <thead>
-                                <tr>
-                                    <th>Product Code</th>
-                                    <th>Product Name</th>
-                                    <th>Quantity</th>
-                                    <th>Total Cost</th>
-                                    <th>Action</th>
-                                </tr>
-                            </thead>
-                            <tbody id="forecastList"></tbody>
-                        </table>
                     </div>
                     <div id="forecastdetail" class="menu-page">
                         <div class="card-custom">
@@ -1951,7 +1950,7 @@
                         <div class="card-custom">
                             <h3 class="text-info mb-3">
                                 <i class="fa-solid fa-box-open"></i>
-                                Upload Stock Awal BB
+                                Upload Start Raw Materials Stock
                             </h3>
                             <div class="section-divider"></div>
                             <!-- FILTER -->
@@ -1986,7 +1985,7 @@
                                     </h5>
                                 </div>
                                 <div class="col-md-6 text-end">
-                                    <h5 class="text-warning">
+                                    <h5 class="text-dark">
                                         Total Data :
                                         <span id="stockAwalTotalData">
                                             0
@@ -1994,9 +1993,9 @@
                                     </h5>
                                 </div>
                             </div>
-                            <!-- TABLE -->
+                            <!-- PREVIEW DATA EXCEL -->
                             <div class="table-responsive">
-                                <table class="table table-dark table-striped">
+                                <table class="table table-dark table-striped table-hover">
                                     <thead>
                                         <tr>
                                             <th>Code</th>
@@ -2011,10 +2010,9 @@
                                     <tbody id="stockAwalTable"></tbody>
                                 </table>
                             </div>
-                        </div>
-                        <!-- ================= DATA STOCK AWAL TERSIMPAN ================= -->
-                        <div class="mt-4">
-                            <h5 class="text-success">
+                            <hr class="my-4">
+                            <!-- DATA TERSIMPAN -->
+                            <h5 class="text-success mb-3">
                                 <i class="fa-solid fa-database"></i>
                                 Last Stock Materials Data
                             </h5>
@@ -2042,7 +2040,7 @@
                         <div class="card-custom">
                             <h3 class="text-warning mb-3">
                                 <i class="fa-solid fa-boxes-stacked"></i>
-                                Upload Stock Opname
+                                Upload Stock Opname Materials
                             </h3>
                             <div class="section-divider"></div>
                             <!-- FILTER -->
