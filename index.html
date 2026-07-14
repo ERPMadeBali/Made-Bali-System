@@ -1711,6 +1711,7 @@
                                         <th>Kode</th>
                                         <th>Nama Biaya</th>
                                         <th>Value</th>
+                                        <th>Action</th>
                                     </tr>
                                 </thead>
                                 <tbody id="productionCostList">
@@ -2280,6 +2281,8 @@
                             // =====================================================
                             // GLOBAL NUMBER FORMAT
                             // =====================================================
+
+                            // Untuk nilai uang / value (2 desimal)
                             function formatNumber(value) {
                                 return Number(value).toLocaleString("id-ID", {
                                     minimumFractionDigits: 2,
@@ -2287,6 +2290,15 @@
                                 });
                             }
 
+                            // Untuk gramasi / berat (maksimal 6 desimal)
+                            function formatWeight(value) {
+                                return Number(value).toLocaleString("id-ID", {
+                                    minimumFractionDigits: 0,
+                                    maximumFractionDigits: 6
+                                });
+                            }
+
+                            // Konversi format Indonesia ke Number
                             function parseNumberID(value) {
                                 return Number(
                                     String(value)
@@ -2294,7 +2306,6 @@
                                         .replace(",", ".")
                                 ) || 0;
                             }
-
                             /* ================= LOGIN ================= */
                             async function login() {
                                 const email = document.getElementById('email').value;
@@ -2601,7 +2612,7 @@
                     <button
                         class="btn btn-danger btn-sm w-100"
                         onclick="deleteUnit('${d.id}')">
-                        Hapus
+                        Delete
                     </button>
                 </td>
             </tr>
@@ -2778,7 +2789,7 @@
                 <button
                     class="btn btn-danger btn-sm w-100"
                     onclick="deleteSupplier('${d.id}')">
-                    Hapus
+                    Delete
                 </button>
             </td>
         </tr>
@@ -2866,14 +2877,14 @@
         <td>${d.data().code}</td>
         <td>${d.data().name}</td>
         <td>${d.data().unit}</td>
-        <td> ${formatNumber(d.data().weight || 0)}</td>
+        <td> ${formatWeight(d.data().weight || 0)}</td>
         <td>Rp ${formatNumber(d.data().price || 0)}</td>
         <td>Rp ${formatNumber(d.data().average || 0)}</td>
         <td width="120">
             <button
                 class="btn btn-danger btn-sm w-100"
                 onclick="deleteMaterial('${d.id}')">
-                Hapus
+                Delete
             </button>
         </td>
     </tr>
@@ -2916,8 +2927,9 @@
                             }
 
                             /* ================= RECIPE ================= */
-                            /* ==LOCK ACCES INPUT DATA==== */
                             async function showProductionRecipe() {
+
+                                /* ==LOCK ACCES INPUT DATA==== */
                                 const user = auth.currentUser;
                                 if (!user) return;
                                 const username = user.email.split("@")[0].toLowerCase().trim();
@@ -3073,7 +3085,7 @@
             <td width="120">
                 <button class="btn btn-danger btn-sm"
                     onclick="deleteRecipeItem(${index})">
-                    Hapus
+                    Delete
                 </button>
             </td>
         </tr>
@@ -3657,7 +3669,7 @@
                                 <button
                                     class="btn btn-danger btn-sm w-100"
                                     onclick="deletePriceFG('${d.id}')">
-                                    Hapus
+                                    Delete
                                 </button>
                             </td>
                         </tr>
@@ -3746,10 +3758,10 @@
                                 let supplierHtml = `<option value="">Select Supplier</option>`;
                                 supplierSnap.forEach(d => {
                                     supplierHtml += `
-            <option value="${d.data().name}">
-                ${d.data().name}
-            </option>
-        `;
+                            <option value="${d.data().name}">
+                                ${d.data().name}
+                            </option>
+                        `;
                                 });
 
                                 document.getElementById("purchaseSupplier").innerHTML = supplierHtml;
@@ -3883,7 +3895,7 @@
         <td>
             <button class="btn btn-danger btn-sm"
                 onclick="deletePurchase('${d.id}')">
-                Hapus
+                Delete
             </button>
         </td>
     </tr>
@@ -3950,18 +3962,8 @@
                 <td>${item.materialName}</td>
                 <td>${qty}</td>
                 <td>${item.unit}</td>
-                <td>
-                    Rp ${price.toLocaleString(undefined, {
-                                        minimumFractionDigits: 2,
-                                        maximumFractionDigits: 2
-                                    })}
-                </td>
-                <td>
-                    Rp ${average.toLocaleString(undefined, {
-                                        minimumFractionDigits: 2,
-                                        maximumFractionDigits: 2
-                                    })}
-                </td>
+                <td>Rp ${formatNumber(price)}</td>
+                <td>Rp ${formatNumber(average)}</td>
                 <td>${item.supplier}</td>
                 <td>${item.date}</td>
             </tr>
@@ -3970,10 +3972,7 @@
 
                                 // TOTAL HARGA BELI
                                 document.getElementById("totalPurchasePrice").innerHTML =
-                                    `Rp ${grandTotal.toLocaleString(undefined, {
-                                        minimumFractionDigits: 2,
-                                        maximumFractionDigits: 2
-                                    })}`;
+                                    `Rp ${formatNumber(grandTotal)}`;
 
                                 // TABLE
                                 document.getElementById("purchaseViewList").innerHTML =
@@ -4066,8 +4065,8 @@
                                         item.materialName,
                                         qty,
                                         item.unit,
-                                        "Rp " + price.toLocaleString(),
-                                        "Rp " + average.toLocaleString(),
+                                        "Rp " + formatNumber(price),
+                                        "Rp " + formatNumber(average),
                                         item.supplier,
                                         item.date
                                     ]);
@@ -4099,7 +4098,7 @@
                                 // ================= TOTAL HARGA BELI =================
                                 doc.setFontSize(12);
                                 doc.text(
-                                    `Total Purchase Order : Rp ${totalPrice.toLocaleString()}`,
+                                    `Total Purchase Order : Rp ${formatNumber(totalPrice)}`,
                                     40,
                                     80
                                 );
@@ -4423,7 +4422,7 @@
             <td>
                 <button class="btn btn-danger btn-sm"
                     onclick="deleteProduction('${d.id}')">
-                    Hapus
+                    Delete
                 </button>
                 
                 <button class="btn btn-info btn-sm"
@@ -4689,7 +4688,7 @@
             <td>
                 <button class="btn btn-danger btn-sm"
                     onclick="deleteProductionResult('${d.id}')">
-                    Hapus
+                    Delete
                 </button>
             </td>
         </tr>
@@ -4734,7 +4733,7 @@
             <td>
                 <button class="btn btn-danger btn-sm"
                     onclick="deleteWasteFG('${d.id}')">
-                    Hapus
+                    Delete
                 </button>
             </td>
         </tr>
@@ -4773,7 +4772,7 @@
             <td>
                 <button class="btn btn-danger btn-sm"
                     onclick="deleteWasteMaterial('${d.id}')">
-                    Hapus
+                    Delete
                 </button>
             </td>
         </tr>
@@ -5171,7 +5170,7 @@
     <td>
         <button class="btn btn-danger btn-sm"
             onclick="deleteWasteFG('${d.id}')">
-            Hapus
+            Delete
         </button>
     </td>
 </tr>
@@ -5351,7 +5350,7 @@
             <td width="120">
                 <button class="btn btn-danger btn-sm w-100"
                     onclick="deleteWasteMaterial('${d.id}')">
-                    Hapus
+                    Delete
                 </button>
             </td>
         </tr>
@@ -5449,7 +5448,7 @@
     <td>
         <button class="btn btn-danger btn-sm w-100"
             onclick="deleteStore('${d.id}')">
-            Hapus
+            Delete
         </button>
     </td>
 </tr>
@@ -5553,7 +5552,7 @@
     <td>
         <button class="btn btn-danger btn-sm"
             onclick="removeSalesFGRow('${rowId}')">
-            Hapus
+            Delete
         </button>
     </td>
 </tr>
@@ -5740,7 +5739,7 @@
     <td>
         <button class="btn btn-danger btn-sm"
             onclick="deleteSalesFG('${d.id}')">
-            Hapus
+            Delete
         </button>
     </td>
 </tr>
@@ -5889,7 +5888,7 @@
     <td>
         <button class="btn btn-danger btn-sm w-100"
             onclick="deleteSales('${d.id}')">
-            Hapus
+            Delete
         </button>
     </td>
 </tr>`;
@@ -6083,7 +6082,7 @@
                                 const overhead = Number(document.getElementById("costOverhead").value || 0);
                                 const total = salary + electric + gas + internet + air + bbm + atk + keamanan + sampah + overhead;
                                 document.getElementById("costTotal").innerHTML =
-                                    `Rp ${total.toLocaleString()}`;
+                                    `Rp ${formatNumber(total)}`;
                             }
 
                             /* ================= EVENT INPUT ================= */
@@ -6187,25 +6186,25 @@
                                 const end = document.getElementById("costEndDate").value;
                                 const tbody = document.getElementById("productionCostList");
                                 const grandTotalEl = document.getElementById("productionCostGrandTotal");
-                                // RESET VIEW dulu
+
+                                // RESET VIEW
                                 tbody.innerHTML = `
         <tr>
-            <td colspan="10" class="text-center text-muted">
+            <td colspan="5" class="text-center text-muted">
                 Silakan pilih tanggal untuk menampilkan data
             </td>
         </tr>
     `;
 
                                 grandTotalEl.innerHTML = "Rp 0";
-
                                 // kalau belum filter, STOP
                                 if (!start || !end) return;
-                                const snap =
-                                    await getDocs(collection(db, "production_cost"));
+                                const snap = await getDocs(
+                                    collection(db, "production_cost")
+                                );
 
                                 let html = "";
                                 let grandTotal = 0;
-
                                 snap.forEach(docSnap => {
                                     const data = docSnap.data();
                                     // FILTER RANGE
@@ -6213,27 +6212,60 @@
                                     grandTotal += Number(data.value || 0);
 
                                     html += `
-                    <tr>
-                        <td>${data.date}</td>
-                        <td>${data.code}</td>
-                        <td>${data.name}</td>
-                        <td>Rp ${Number(data.value).toLocaleString()}</td>
-                    </tr>
-                    `;
+            <tr>
+                <td>${data.date}</td>
+                <td>${data.code}</td>
+                <td>${data.name}</td>
+                <td>Rp ${formatNumber(data.value)}</td>
+                <td class="text-center">
+                    <button
+                        class="btn btn-sm btn-danger"
+                        onclick="deleteProductionCost('${docSnap.id}')">
+                        Delete
+                    </button>
+                </td>
+            </tr>
+        `;
                                 });
 
                                 tbody.innerHTML =
                                     html ||
                                     `
-                    <tr>
-                        <td colspan="4" class="text-center">
-                            Tidak ada data pada periode ini
-                        </td>
-                    </tr>
-                    `;
+        <tr>
+            <td colspan="5" class="text-center">
+                Tidak ada data pada periode ini
+            </td>
+        </tr>
+        `;
+
 
                                 grandTotalEl.innerHTML =
-                                    `Rp ${grandTotal.toLocaleString()}`;
+                                    `Rp ${formatNumber(grandTotal)}`;
+                            }
+                            /* ================= DELETE PRODUCTION COST ================= */
+                            async function deleteProductionCost(id) {
+                                const confirmDelete = confirm(
+                                    "Apakah Anda yakin ingin menghapus data ini?"
+                                );
+                                if (!confirmDelete) return;
+                                try {
+                                    await deleteDoc(
+                                        doc(db, "production_cost", id)
+                                    );
+                                    alert("Data berhasil dihapus");
+                                    // refresh data setelah delete
+                                    loadProductionCostReport();
+                                } catch (error) {
+
+                                    console.error(
+                                        "Delete production cost error:",
+                                        error
+                                    );
+
+                                    alert(
+                                        "Gagal menghapus data"
+                                    );
+                                }
                             }
 
                             /* =========================================================
@@ -8627,6 +8659,7 @@
                             window.openProductionCost = openProductionCost;
                             window.saveProductionCost = saveProductionCost;
                             window.loadProductionCostReport = loadProductionCostReport;
+                            window.deleteProductionCost = deleteProductionCost;
 
                             window.openReport = openReport;
                             window.loadPurchasingReport = loadPurchasingReport;
