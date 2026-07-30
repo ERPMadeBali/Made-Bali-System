@@ -6173,10 +6173,12 @@ import { getFirestore, collection, onSnapshot, addDoc, getDocs, updateDoc, delet
                                     document.getElementById("stockCardTable")
                                         .innerHTML = html;
                                     // TOTAL VALUE
-                                    document.getElementById("stockCardTotalValue")
-                                        .innerHTML =
-                                        "Rp " +
-                                        totalValue.toLocaleString();
+                                    document.getElementById("stockCardTotalValue").innerHTML =
+                                    "Rp " +
+                                    totalValue.toLocaleString("id-ID", {
+                                        minimumFractionDigits: 2,
+                                        maximumFractionDigits: 2
+                                    });
                                     // TOTAL DATA
                                     document.getElementById("stockCardTotalData")
                                         .innerHTML =
