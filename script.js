@@ -5689,11 +5689,14 @@ import { getFirestore, collection, onSnapshot, addDoc, getDocs, updateDoc, delet
                                 });
                                 document.getElementById("soTable").innerHTML = html;
                                 document.getElementById("soTotalValue").innerHTML =
-                                    "Rp " + grandTotal.toLocaleString();
+                                "Rp " + grandTotal.toLocaleString("id-ID", {
+                                  minimumFractionDigits: 2,
+                                  maximumFractionDigits: 2
+                                });
+                              
                                 document.getElementById("soTotalData").innerHTML =
                                     totalData.toLocaleString();
-
-                                // Data sudah berhasil ditampilkan
+            
                                 soDataLoaded = true;
                             }
 
