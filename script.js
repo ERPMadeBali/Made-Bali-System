@@ -5479,21 +5479,26 @@ import { getFirestore, collection, onSnapshot, addDoc, getDocs, updateDoc, delet
                             `;
                         }
 
-                        /* =========================================================
-                        EXPORT PDF PROFIT LOSS
+                       /* =========================================================
+                        EXPORT PROFIT LOSS PDF
                         ========================================================= */
                         async function exportProfitLossPDF() {
-                            const table = document.querySelector("#profitLossTableWrapper table");
-
-                            if (!table || table.style.display === "none") {
+                            const table = document.querySelector("#profitLossResult table");
+                            if (!table) {
                                 alert("Silahkan Load Data Profit & Loss terlebih dahulu");
                                 return;
                             }
-
-                            const start = document.getElementById("reportStartDate").value;
-                            const end = document.getElementById("reportEndDate").value;
+                            const start =
+                                document.getElementById("reportStartDate").value;
+                            const end =
+                                document.getElementById("reportEndDate").value;
                             const {jsPDF} = window.jspdf;
-                            const pdf = new jsPDF("p", "mm", "a4");
+                            const pdf =
+                                new jsPDF(
+                                    "p",
+                                    "mm",
+                                    "a4"
+                                );
 
                             pdf.setFontSize(16);
                             pdf.text(
@@ -5504,7 +5509,6 @@ import { getFirestore, collection, onSnapshot, addDoc, getDocs, updateDoc, delet
                                     align: "center"
                                 }
                             );
-
                             pdf.setFontSize(14);
                             pdf.text(
                                 "PIA MADE BALI",
@@ -5514,7 +5518,6 @@ import { getFirestore, collection, onSnapshot, addDoc, getDocs, updateDoc, delet
                                     align: "center"
                                 }
                             );
-
                             pdf.setFontSize(10);
                             pdf.text(
                                 `Periode : ${formatTanggalIndonesia(start)} - ${formatTanggalIndonesia(end)}`,
@@ -5524,38 +5527,38 @@ import { getFirestore, collection, onSnapshot, addDoc, getDocs, updateDoc, delet
                                     align: "center"
                                 }
                             );
-
                             pdf.autoTable({
-                                html: "#profitLossTableWrapper table",
+                                html: "#profitLossResult table",
                                 startY: 38,
                                 theme: "grid",
-
                                 styles: {
                                     fontSize: 10,
                                     cellPadding: 3
                                 },
-
                                 headStyles: {
-                                    fillColor: [33, 37, 41],
-                                    textColor: 255
-                                },
+                                    fillColor: [
+                                        33,
+                                        37,
+                                        41
+                                    ],
 
+                                    textColor: 255
+
+                                },
                                 columnStyles: {
                                     0: {
                                         halign: "left"
                                     },
+
                                     1: {
                                         halign: "right"
                                     }
                                 }
-
                             });
-
                             pdf.save(
                                 `Profit_Loss_Report_${start}_${end}.pdf`
                             );
                         }
-                            
 
                             /* =================================================== */
                             /* ============= STOCK CARD WAREHOUSE =============== */
