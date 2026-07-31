@@ -1299,7 +1299,6 @@
                             </table>
                         </div>
                     </div>
-
                     <!-- ================= ACCOUNTING ================= -->
                     <!-- ==== COST PRODUCTION ============ -->
                     <div id="productioncost" class="menu-page">
@@ -1694,7 +1693,100 @@
                                 </table>
                             </div>
                         </div>
+                    <!--- ======== PROFIT LOSS REPORT ========== --->
+                    <div id="profitLossReportArea" style="display:none;">
+                        <h5 class="text-warning">
+                            PROFIT & LOSS SUMMARY
+                        </h5>
+                        <div id="profitLossTableWrapper" style="display:none;">
+                            <div class="table-responsive">
+                                <table class="table table-dark table-striped profit-loss-table">
+                                    <tbody>
+
+                                        <tr>
+                                            <td>Periode</td>
+                                            <td align="right" id="plPeriod"></td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="2">
+                                                <b>Revenue</b>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>Sales Revenue</td>
+                                            <td align="right" id="plSales"></td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <b>Total Revenue</b>
+                                            </td>
+
+                                            <td align="right">
+                                                <b id="plRevenue"></b>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="2">
+                                                <b>Cost of Goods Sold</b>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>COGS</td>
+                                            <td align="right" id="plCOGS"></td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <b>Gross Profit</b>
+                                            </td>
+
+                                            <td align="right">
+                                                <b id="plGrossProfit"></b>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="2">
+                                                <b>Operating Expense</b>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>Production Cost</td>
+                                            <td align="right" id="plProductionCost"></td>
+                                        </tr>
+                                        <tr>
+                                            <td>Waste Material</td>
+                                            <td align="right" id="plWasteMaterial"></td>
+                                        </tr>
+                                        <tr>
+                                            <td>Waste FG</td>
+                                            <td align="right" id="plWasteFG"></td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <b>Total Expense</b>
+                                            </td>
+
+                                            <td align="right">
+                                                <b id="plTotalExpense"></b>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <h4>
+                                                    <b>NET PROFIT</b>
+                                                </h4>
+                                            </td>
+                                            <td align="right">
+                                                <h4>
+                                                    <b id="plNetProfit"></b>
+                                                </h4>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
                     </div>
+                </div>
                     <!-- ================= WAREHOUSE MENU ================= -->
                     <div id="uploadStockAwal" class="menu-page">
                         <div class="card-custom">
