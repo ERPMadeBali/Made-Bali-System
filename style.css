@@ -265,6 +265,7 @@ body {
                 border-color: rgba(255, 255, 255, 0.08);
 
             }
+            
             #profitLossTableWrapper h4 {
                 color: #ffc107;
                 letter-spacing: 1px;
@@ -282,11 +283,15 @@ body {
             }
 
             /* VALUE */
-            #profitLossTableWrapper td[id],
-            #profitLossTableWrapper td b {
-                font-weight: 600;
-
+           #profitLossTableWrapper td[id]{
+                font-weight:600;
+                color:#ffffff !important;
             }
+            
+            #profitLossTableWrapper b{
+                font-weight:600;
+            }
+
             #plRevenue,
             #plGrossProfit,
             #plTotalExpense {
