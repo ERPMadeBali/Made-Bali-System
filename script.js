@@ -6708,10 +6708,6 @@ import { getFirestore, collection, onSnapshot, addDoc, getDocs, updateDoc, delet
                             window.loadWasteMaterialTable = loadWasteMaterialTable;
                             window.deleteWasteMaterial = deleteWasteMaterial;
 
-                            window.toggleAccounting = toggleAccounting;
-                            window.openProfitLoss = openProfitLoss;
-                            window.loadProfitLoss = loadProfitLoss;
-
                             window.showPriceProduct = showPriceProduct;
                             window.savePriceFG = savePriceFG;
                             window.loadPriceFGTable = loadPriceFGTable;
@@ -6732,7 +6728,8 @@ import { getFirestore, collection, onSnapshot, addDoc, getDocs, updateDoc, delet
                             window.saveProductionCost = saveProductionCost;
                             window.loadProductionCostReport = loadProductionCostReport;
                             window.deleteProductionCost = deleteProductionCost;
-
+                            
+                            window.toggleAccounting = toggleAccounting;
                             window.openReport = openReport;
                             window.loadPurchasingReport = loadPurchasingReport;
                             window.backToReportMenu = backToReportMenu;
@@ -6746,10 +6743,7 @@ import { getFirestore, collection, onSnapshot, addDoc, getDocs, updateDoc, delet
                             window.saveSOData = saveSOData;
                             window.loadSOData = loadSOData;
                             window.printSOPDF = printSOPDF;
-
-
                             window.loadStockCardWarehouse = loadStockCardWarehouse;
-
 
                             // ==========================
                             // FUNCITON OPEN PAGE ALL
