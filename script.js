@@ -4254,7 +4254,6 @@ import { getFirestore, collection, onSnapshot, addDoc, getDocs, updateDoc, delet
 
                                 // set judul report
                                 const title = document.getElementById("reportTitle");
-
                                 if (type === "purchasing") {
                                     title.innerHTML = "Purchasing Report";
                                     document.getElementById("reportSubTitle").innerHTML =
@@ -4350,9 +4349,7 @@ import { getFirestore, collection, onSnapshot, addDoc, getDocs, updateDoc, delet
     `;
 
                                 snap.forEach(doc => {
-
                                     const d = doc.data();
-
                                     // filter date
                                     if (d.date < start || d.date > end) return;
 
@@ -5271,11 +5268,6 @@ import { getFirestore, collection, onSnapshot, addDoc, getDocs, updateDoc, delet
 
                                     `COGS_Report_${start}_${end}.pdf`
                                 );
-                            }
-
-                            function loadProfitLossReport() {
-                                document.getElementById("reportHead").innerHTML = "<tr><th>Profit & Loss Report</th></tr>";
-                                document.getElementById("reportBody").innerHTML = "<tr><td>Coming Soon</td></tr>";
                             }
 
                       /* =======================================================
