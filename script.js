@@ -5404,60 +5404,83 @@ import { getFirestore, collection, onSnapshot, addDoc, getDocs, updateDoc, delet
                             const netProfit =
                                 grossProfit - totalExpense;
                             /* ================= UPDATE PROFIT LOSS TABLE ================= */
-                            document.getElementById("plPeriod").innerHTML =
-                                `${formatTanggalIndonesia(start)} - ${formatTanggalIndonesia(end)}`;
+                             const rupiah = (value) =>
+                                `Rp ${Number(value).toLocaleString("id-ID", {
+                                    minimumFractionDigits: 2,
+                                    maximumFractionDigits: 2
+                                })}`;
 
-                            document.getElementById("plSales").innerHTML =
-                                `Rp ${totalSales.toLocaleString("id-ID", {
-                                    minimumFractionDigits: 2,
-                                    maximumFractionDigits: 2
-                                })}`;
-                            document.getElementById("plRevenue").innerHTML =
-                                `Rp ${totalSales.toLocaleString("id-ID", {
-                                    minimumFractionDigits: 2,
-                                    maximumFractionDigits: 2
-                                })}`;
-                            document.getElementById("plCOGS").innerHTML =
-                                `Rp ${totalCOGS.toLocaleString("id-ID", {
-                                    minimumFractionDigits: 2,
-                                    maximumFractionDigits: 2
-                                })}`;
-                            document.getElementById("plGrossProfit").innerHTML =
-                                `Rp ${grossProfit.toLocaleString("id-ID", {
-                                    minimumFractionDigits: 2,
-                                    maximumFractionDigits: 2
-                                })}`;
-                            document.getElementById("plProductionCost").innerHTML =
-                                `Rp ${totalOverhead.toLocaleString("id-ID", {
-                                    minimumFractionDigits: 2,
-                                    maximumFractionDigits: 2
-                                })}`;
-                            document.getElementById("plWasteMaterial").innerHTML =
-                                `Rp ${totalWasteMaterial.toLocaleString("id-ID", {
-                                    minimumFractionDigits: 2,
-                                    maximumFractionDigits: 2
-                                })}`;
-                            document.getElementById("plWasteFG").innerHTML =
-                                `Rp ${totalWasteFG.toLocaleString("id-ID", {
-                                    minimumFractionDigits: 2,
-                                    maximumFractionDigits: 2
-                                })}`;
-                            document.getElementById("plTotalExpense").innerHTML =
-                                `Rp ${totalExpense.toLocaleString("id-ID", {
-                                    minimumFractionDigits: 2,
-                                    maximumFractionDigits: 2
-                                })}`;
-                            document.getElementById("plNetProfit").innerHTML =
-                                `Rp ${netProfit.toLocaleString("id-ID", {
-                                    minimumFractionDigits: 2,
-                                    maximumFractionDigits: 2
-                                })}`;
-                            document.getElementById("profitLossTableWrapper").style.display = "block";
-
+                            document.getElementById("profitLossResult").innerHTML = `
+                            <div class="table-responsive">
+                            <table class="table table-dark table-striped table-hover align-middle">
+                            <tbody>
+                            <tr>
+                                <td width="65%">Periode</td>
+                                <td class="text-end">
+                                    ${formatTanggalIndonesia(start)} - ${formatTanggalIndonesia(end)}
+                                </td>
+                            </tr>
+                            <tr class="table-warning">
+                                <th colspan="2">Revenue</th>
+                            </tr>
+                            <tr>
+                                <td>Sales Revenue</td>
+                                <td class="text-end">${rupiah(totalSales)}</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Total Revenue</strong></td>
+                                <td class="text-end">
+                                    <strong>${rupiah(totalSales)}</strong>
+                                </td>
+                            </tr>
+                            <tr class="table-warning">
+                                <th colspan="2">Cost of Goods Sold</th>
+                            </tr>
+                            <tr>
+                                <td>COGS</td>
+                                <td class="text-end">${rupiah(totalCOGS)}</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Gross Profit</strong></td>
+                                <td class="text-end">
+                                    <strong>${rupiah(grossProfit)}</strong>
+                                </td>
+                            </tr>
+                            <tr class="table-warning">
+                                <th colspan="2">Operating Expense</th>
+                            </tr>
+                            <tr>
+                                <td>Production Cost</td>
+                                <td class="text-end">${rupiah(totalOverhead)}</td>
+                            </tr>
+                            <tr>
+                                <td>Waste Material</td>
+                                <td class="text-end">${rupiah(totalWasteMaterial)}</td>
+                            </tr>
+                            <tr>
+                                <td>Waste FG</td>
+                                <td class="text-end">${rupiah(totalWasteFG)}</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Total Expense</strong></td>
+                                <td class="text-end">
+                                    <strong>${rupiah(totalExpense)}</strong>
+                                </td>
+                            </tr>
+                            <tr class="${netProfit >= 0 ? "table-success" : "table-danger"}">
+                                <th style="font-size:18px;">NET PROFIT</th>
+                                <th class="text-end" style="font-size:18px;">
+                                    ${rupiah(netProfit)}
+                                </th>
+                            </tr>
+                            </tbody>
+                            </table>
+                            </div>
+                            `;
                         }
 
                         /* =========================================================
-                        EXPORT PROFIT LOSS PDF
+                        EXPORT PDF PROFIT LOSS
                         ========================================================= */
                         async function exportProfitLossPDF() {
                             const table = document.querySelector("#profitLossTableWrapper table");
