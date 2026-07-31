@@ -105,11 +105,8 @@
                         <a href="#" onclick="openProductionCost()">
                             - Input Cost Production
                         </a>
-                        <a href="#" onclick="openProfitLoss()">
-                            - Profit and loss
-                        </a>
                         <a href="#" onclick="openAccountingReport()">
-                            - Report
+                            - Report Data Production
                         </a>
                     </div>
                 </li>
@@ -1474,76 +1471,6 @@
                             </div>
                         </div>
                     </div>
-                    <!-- ==== PROFIT & LOSS ============ -->
-                    <div id="profitloss" class="menu-page">
-                        <div class="card-custom">
-                            <h3 class="text-warning mb-4">
-                                <i class="fa-solid fa-coins"></i>
-                                Accounting
-                            </h3>
-                            <div class="section-divider"></div>
-                            <h5 class="text-warning mb-3">
-                                <i class="fa-solid fa-scale-balanced me-2"></i>
-                                Profit and Loss Summary Report.
-                            </h5>
-                            <div class="section-divider"></div>
-                            <!-- FILTER -->
-                            <div class="row mb-4">
-                                <div class="col-md-3">
-                                    <label>Start Date</label>
-                                    <input type="date" id="plStartDate" class="form-control">
-                                </div>
-                                <div class="col-md-3">
-                                    <label>End Date</label>
-                                    <input type="date" id="plEndDate" class="form-control">
-                                </div>
-                                <div class="col-md-2 d-flex align-items-end">
-                                    <button class="btn btn-warning w-100" onclick="loadProfitLoss()">
-                                        Load Data
-                                    </button>
-                                </div>
-                            </div>
-                            <!-- TABLE -->
-                            <table class="table table-dark table-striped">
-                                <thead>
-                                    <tr>
-                                        <th>Items</th>
-                                        <th>Total</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td>Sales Total</td>
-                                        <td id="plSales">Rp 0</td>
-                                    </tr>
-                                    <tr>
-                                        <td>HPP Production</td>
-                                        <td id="plCOGS">Rp 0</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Production Cost + Overhead Cost</td>
-                                        <td id="plOverhead">Rp 0</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Raw Materials Waste</td>
-                                        <td id="plWasteMaterial">Rp 0</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Finished Goods Waste</td>
-                                        <td id="plWasteFG">Rp 0</td>
-                                    </tr>
-                                    <tr class="table-warning">
-                                        <td>
-                                            <b>Nett profit</b>
-                                        </td>
-                                        <td id="plGrossProfit">
-                                            <b>Rp 0</b>
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
                     <!-- ================= ACCOUNTING REPORT MENU ================= -->
                     <div id="accounting_report" class="menu-page">
                         <div class="card-custom">
@@ -1698,91 +1625,15 @@
                         <h5 class="text-warning">
                             PROFIT & LOSS SUMMARY
                         </h5>
-                        <div id="profitLossTableWrapper" style="display:none;">
-                            <div class="table-responsive">
-                               <table class="table table-dark table-striped profit-loss-table">
-                                    <tbody>
-                                        <tr>
-                                            <td>Periode</td>
-                                            <td align="right" id="plPeriod"></td>
-                                        </tr>
-                                        <tr>
-                                            <td colspan="2">
-                                                <b>Revenue</b>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>Sales Revenue</td>
-                                            <td align="right" id="plSales"></td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                <b>Total Revenue</b>
-                                            </td>
-
-                                            <td align="right">
-                                                <b id="plRevenue"></b>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td colspan="2">
-                                                <b>Cost of Goods Sold</b>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>COGS</td>
-                                            <td align="right" id="plCOGS"></td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                <b>Gross Profit</b>
-                                            </td>
-
-                                            <td align="right">
-                                                <b id="plGrossProfit"></b>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td colspan="2">
-                                                <b>Operating Expense</b>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>Production Cost</td>
-                                            <td align="right" id="plProductionCost"></td>
-                                        </tr>
-                                        <tr>
-                                            <td>Waste Material</td>
-                                            <td align="right" id="plWasteMaterial"></td>
-                                        </tr>
-                                        <tr>
-                                            <td>Waste FG</td>
-                                            <td align="right" id="plWasteFG"></td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                <b>Total Expense</b>
-                                            </td>
-
-                                            <td align="right">
-                                                <b id="plTotalExpense"></b>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                <h4>
-                                                    <b>NET PROFIT</b>
-                                                </h4>
-                                            </td>
-                                            <td align="right">
-                                                <h4>
-                                                    <b id="plNetProfit"></b>
-                                                </h4>
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
+                        <div id="profitLossResult">
+                            <table class="table table-dark table-striped">
+                                <tbody>
+                                    <tr>
+                                        <td>Profit & Loss Report</td>
+                                        <td class="text-end">Waiting Data...</td>
+                                    </tr>
+                                </tbody>
+                            </table>
                         </div>
                     </div>
                 </div>
