@@ -31,7 +31,6 @@ import { getFirestore, collection, onSnapshot, addDoc, getDocs, updateDoc, delet
                             });
 
                             /* ================= AUTO LOGOUT ================= */
-
                             let idleTimer;
                             function resetIdleTimer() {
                                 clearTimeout(idleTimer);
@@ -442,69 +441,68 @@ import { getFirestore, collection, onSnapshot, addDoc, getDocs, updateDoc, delet
 
                                 let html = `
 
-    <h5 class="mb-3 text-warning">
-        <i class="fa-solid fa-truck"></i>
-        Master Data Supplier
-    </h5>
-
-    <div class="section-divider"></div>
-
-    <div class="row mb-3">
-
-        <div class="col-md-3">
-            <label>SUP Code</label>
-            <input type="text"
-                id="suppliers"
-                class="form-control auto-field"
-                readonly>
-        </div>
-
-        <div class="col-md-3">
-            <label>Supplier Name</label>
-            <input type="text"
-                id="supplierName"
-                class="form-control mb-2">
-        </div>
-
-        <div class="col-md-3">
-            <label>Supplier Address</label>
-            <input type="text"
-                id="supplierAddress"
-                class="form-control mb-2">
-        </div>
-
-        <div class="col-md-3">
-            <label>Contact</label>
-            <input type="text"
-                id="supplierPhone"
-                class="form-control mb-2">
-        </div>
-
-    </div>
-
-    <button class="btn btn-warning w-100 mb-3"
-        onclick="addSupplier()">
-        Save Supplier
-    </button>
-
-
-    <table class="table table-dark table-striped">
-
-        <thead>
-            <tr>
-                <th>Supplier Code</th>
-                <th>Supplier Name</th>
-                <th>Address</th>
-                <th>Contact</th>
-                <th>Action</th>
-            </tr>
-        </thead>
-
-        <tbody id="supplierList"></tbody>
-
-    </table>
-    `;
-
+                                      <h5 class="mb-3 text-warning">
+                                          <i class="fa-solid fa-truck"></i>
+                                          Master Data Supplier
+                                      </h5>
+                                  
+                                      <div class="section-divider"></div>
+                                  
+                                      <div class="row mb-3">
+                                  
+                                          <div class="col-md-3">
+                                              <label>SUP Code</label>
+                                              <input type="text"
+                                                  id="suppliers"
+                                                  class="form-control auto-field"
+                                                  readonly>
+                                          </div>
+                                  
+                                          <div class="col-md-3">
+                                              <label>Supplier Name</label>
+                                              <input type="text"
+                                                  id="supplierName"
+                                                  class="form-control mb-2">
+                                          </div>
+                                  
+                                          <div class="col-md-3">
+                                              <label>Supplier Address</label>
+                                              <input type="text"
+                                                  id="supplierAddress"
+                                                  class="form-control mb-2">
+                                          </div>
+                                  
+                                          <div class="col-md-3">
+                                              <label>Contact</label>
+                                              <input type="text"
+                                                  id="supplierPhone"
+                                                  class="form-control mb-2">
+                                          </div>
+                                  
+                                      </div>
+                                  
+                                      <button class="btn btn-warning w-100 mb-3"
+                                          onclick="addSupplier()">
+                                          Save Supplier
+                                      </button>
+                                  
+                                  
+                                      <table class="table table-dark table-striped">
+                                  
+                                          <thead>
+                                              <tr>
+                                                  <th>Supplier Code</th>
+                                                  <th>Supplier Name</th>
+                                                  <th>Address</th>
+                                                  <th>Contact</th>
+                                                  <th>Action</th>
+                                              </tr>
+                                          </thead>
+                                  
+                                          <tbody id="supplierList"></tbody>
+                                  
+                                      </table>
+                                      `;
 
                                 document.getElementById("masterContent").innerHTML = html;
                                 showPage('masterdata');
@@ -3712,7 +3710,6 @@ import { getFirestore, collection, onSnapshot, addDoc, getDocs, updateDoc, delet
                                 yearSelect.innerHTML = yHtml;
                                 yearSelect.value = new Date().getFullYear();
                             }
-
 
                             /* DELETE SALES */
                             async function deleteSales(id) {
