@@ -1,236 +1,690 @@
+/* =========================================================
+   PROFESSIONAL BLACK — GOLD & NAVY EDITION
+   Struktur dan class lama dipertahankan
+========================================================= */
+:root {
+    /* MAIN COLORS */
+    --black: #080b10;
+    --black-soft: #0d1117;
+    --black-card: #111827;
+    --black-card-2: #151d2b;
+
+    /* GOLD */
+    --gold: #facc15;
+    --gold-light: #fde68a;
+    --gold-dark: #ca8a04;
+    --gold-soft: rgba(250, 204, 21, 0.12);
+
+    /* NAVY / BLUE ACCENT */
+    --navy: #172554;
+    --blue: #3b82f6;
+    --blue-light: #60a5fa;
+    --blue-soft: rgba(59, 130, 246, 0.12);
+
+    /* TEXT */
+    --text: #f8fafc;
+    --text-soft: #e2e8f0;
+    --muted: #94a3b8;
+
+    /* BORDER */
+    --border: rgba(255, 255, 255, 0.08);
+    --border-gold: rgba(250, 204, 21, 0.22);
+
+    /* SHADOW */
+    --shadow:
+        0 10px 30px rgba(0, 0, 0, 0.35);
+
+    --shadow-lg:
+        0 20px 60px rgba(0, 0, 0, 0.50);
+}
+
+
+/* =========================================================
+   BODY
+========================================================= */
+
 body {
-                margin: 0;
-                font-family: Segoe UI;
-                background: #0f172a;
-                color: white;
-            }
+    margin: 0;
 
-            .sidebar {
-                position: fixed;
-                width: 260px;
-                height: 100vh;
-                padding-top: 20px;
-                background: #111827;
-                box-shadow: 2px 0 20px rgba(0, 0, 0, 0.25);
-                border-right: 1px solid rgba(255, 255, 255, 0.08);
-            }
+    font-family:
+        "Segoe UI",
+        -apple-system,
+        BlinkMacSystemFont,
+        sans-serif;
 
-            .sidebar h2 {
-                text-align: center;
-                color: #facc15;
-                margin-bottom: 30px;
-            }
+    background:
+        radial-gradient(
+            circle at 80% 0%,
+            rgba(30, 58, 138, 0.10),
+            transparent 28%
+        ),
+        radial-gradient(
+            circle at 20% 100%,
+            rgba(250, 204, 21, 0.045),
+            transparent 30%
+        ),
+        linear-gradient(
+            135deg,
+            #06080c 0%,
+            #0b0f15 50%,
+            #080b10 100%
+        );
 
-            .sidebar a {
-                display: block;
-                color: #cbd5e1;
-                text-decoration: none;
-                padding: 12px 20px;
-                transition: 0.3s;
-            }
+    color: var(--text);
 
-            .sidebar a:hover {
-                background: #1e293b;
-                color: white;
-            }
+    min-height: 100vh;
 
-            .content {
-                margin-top: 90px;
-                height: calc(100vh - 90px);
-                overflow-y: auto;
-                padding: 20px;
-            }
+    -webkit-font-smoothing: antialiased;
+}
 
-            .topbar {
-                position: fixed;
-                top: 0;
-                left: 260px;
-                right: 0;
-                height: 80px;
-                padding: 10px 25px;
-                display: flex;
-                justify-content: space-between;
-                align-items: center;
-                background: #111827;
-                z-index: 9999;
-            }
 
-            .topbar .text-end {
-                line-height: 1.2;
-                font-size: 14px;
+/* =========================================================
+   SIDEBAR
+========================================================= */
 
-            }
+.sidebar {
+    position: fixed;
+    width: 260px;
+    height: 100vh;
+    padding-top: 20px;
+    background:
+        linear-gradient(
+            180deg,
+            #0b0f16 0%,
+            #111827 48%,
+            #0a0e14 100%
+        );
 
-            .main {
-                margin-left: 260px;
-                height: 100vh;
-                overflow: hidden;
-            }
+    box-shadow: 8px 0 35px rgba(0, 0, 0, 0.35);
+    border-right:  1px solid rgba(250, 204, 21, 0.10);
+    overflow-y: auto;
+}
 
-            .card-custom {
-                background: #1e293b;
-                border-radius: 20px;
-                padding: 20px;
-                margin-bottom: 20px;
-            }
+/* SIDEBAR GOLD ACCENT */
+.sidebar::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 1px;
+    height: 100%;
+    background:
+        linear-gradient(
+            to bottom,
+            transparent,
+            rgba(250, 204, 21, 0.28),
+            transparent
+        );
+    pointer-events: none;
+}
 
-            .stat-card {
-                background: linear-gradient(135deg, #1e293b, #334155);
-                border-radius: 20px;
-                padding: 20px;
-                text-align: center;
-            }
 
-            .stat-card h2 {
-                color: #facc15;
-            }
+.sidebar h2 {
+    text-align: center;
+    color: var(--gold);
+    margin-bottom: 30px;
+    font-weight: 800;
+    letter-spacing: 0.5px;
+    text-shadow:
+        0 0 20px rgba(250, 204, 21, 0.15);
+}
 
-            .login-page {
-                height: 100vh;
-                display: flex;
-                justify-content: center;
-                align-items: center;
-                background: linear-gradient(135deg, #111827, #1e293b);
-            }
 
-            .login-box {
-                width: 400px;
-                background: #1e293b;
-                padding: 40px;
-                border-radius: 20px;
-            }
+/* SIDEBAR MENU */
 
-            .dashboard {
-                display: none;
-            }
+.sidebar a {
+    display: block;
+    color: #cbd5e1;
+    text-decoration: none;
+    padding: 12px 20px;
+    margin: 3px 10px;
+    border-radius: 9px;
+    transition:
+        background .25s ease,
+        color .25s ease,
+        transform .25s ease,
+        border-color .25s ease;
+    border:
+        1px solid transparent;
+}
 
-            .table {
-                color: white;
-            }
 
-            .menu-page {
-                display: none;
-            }
+.sidebar a:hover {
+    background:
+        linear-gradient(
+            90deg,
+            rgba(250, 204, 21, 0.10),
+            rgba(59, 130, 246, 0.06)
+        );
 
-            .active-page {
-                display: block;
-            }
+    color: #ffffff;
+    border-color:
+        rgba(250, 204, 21, 0.12);
+    transform:
+        translateX(3px);
+}
 
-            .menu-page.active-page {
-                display: block;
-            }
+/* =========================================================
+   CONTENT
+========================================================= */
+.content {
+    margin-top: 90px;
+    height: calc(100vh - 90px);
+    overflow-y: auto;
+    padding: 20px;
+    scrollbar-width: thin;
+    scrollbar-color:
+        #334155
+        #0b0f15;
+}
 
-            .app-logo {
-                height: 110px;
-                object-fit: contain;
-                display: block;
-                margin: 0 auto;
-            }
 
-            .sidebar-logo {
-                height: 100px;
-                object-fit: contain;
-                display: block;
-                margin: 0 auto 15px auto;
-            }
+/* =========================================================
+   TOPBAR
+========================================================= */
 
-            .topbar-logo {
-                height: 45px;
-                object-fit: contain;
-            }
+.topbar {
+    position: fixed;
+    top: 0;
+    left: 260px;
+    right: 0;
+    height: 80px;
+    padding: 10px 25px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background:
+        linear-gradient(
+            90deg,
+            #0b0f16 0%,
+            #111827 55%,
+            #101827 100%
+        );
 
-            .section-subtitle {
-                color: #facc15;
-                font-size: 24px;
-                font-weight: 800;
-                letter-spacing: 0.5px;
-                margin-top: 15px;
-            }
-            .section-divider {
-                height: 1px;
-                background: #80807ff1;
-                opacity: 0.6;
-                margin: 5px 0 10px 0;
-                border-radius: 2px;
-            }
+    color: white;
+    z-index: 9999;
+    border-bottom:  1px solid rgba(250, 204, 21, 0.10);
+    box-shadow:  0 8px 30px rgba(0, 0, 0, 0.30);
+       
+}
+/* GOLD LINE UNDER TOPBAR */
+.topbar::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    height: 1px;
+    background:
+        linear-gradient(
+            90deg,
+            transparent,
+            rgba(250, 204, 21, 0.35),
+            transparent
+        );
+    pointer-events: none;
+}
 
-            .form-control.auto-field,
-            .form-control.auto-field:focus,
-            .form-control.auto-field[readonly] {
-                background-color: #d6d8db !important;
-                color: #495057 !important;
-                font-weight: 600;
-                border: 1px solid #adb5bd !important;
-                cursor: not-allowed;
-                opacity: 1 !important;
-            }
+.topbar .text-end {
+    line-height: 1.2;
+    font-size: 14px;
+    color: var(--text-soft);
+}
 
-            .marquee-container {
-                width: 70%;
-                overflow: hidden;
-                white-space: nowrap;
-            }
+/* =========================================================
+   MAIN
+========================================================= */
+.main {
+    margin-left: 260px;
+    height: 100vh;
+    overflow: hidden;
+}
 
-            .marquee-text {
-                display: inline-block;
-                padding-left: 100%;
-                font-size: 24px;
-                font-weight: bold;
-                animation: marquee 15s linear infinite;
-            }
+/* =========================================================
+   CUSTOM CARD
+========================================================= */
+.card-custom {
+    background:
+        linear-gradient(
+            145deg,
+            #151d2b,
+            #0f1722
+        );
 
-            .report-grid {
-                display: grid;
-                grid-template-columns: repeat(2, 1fr);
-                gap: 25px;
-                margin-top: 25px;
-            }
+    border-radius: 20px;
+    padding: 20px;
+    margin-bottom: 20px;
+    border: 1px solid rgba(255, 255, 255, 0.07);
+    box-shadow:  var(--shadow);
+    position: relative;
+    overflow: hidden;
+}
+/* subtle gold reflection */
+.card-custom::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 1px;
+    background:
+        linear-gradient(
+            90deg,
+            transparent,
+            rgba(250, 204, 21, 0.22),
+            transparent
+        );
+}
 
-            .report-card {
-                background: #1f2937;
-                border: 1px solid #facc15;
-                border-radius: 12px;
-                text-align: center;
-                padding: 30px;
-                cursor: pointer;
-                transition: .3s;
-            }
+/* =========================================================
+   STAT CARD
+========================================================= */
+.stat-card {
+    background:
+        linear-gradient(
+            135deg,
+            #111827 0%,
+            #1e293b 65%,
+            #172033 100%
+        );
 
-            .report-card:hover {
-                background: #374151;
-                transform: translateY(-5px);
-            }
+    border-radius: 20px;
+    padding: 20px;
+    text-align: center;
+    border:  1px solid rgba(250, 204, 21, 0.12);
+    box-shadow:   var(--shadow);
+    position: relative;
+    overflow: hidden;
+    transition:
+        transform .25s ease,
+        border-color .25s ease,
+        box-shadow .25s ease;
+}
 
-            .report-card i {
-                color: #facc15;
-                margin-bottom: 15px;
 
-            }
+.stat-card:hover {
+    transform: translateY(-3px);
+    border-color: rgba(250, 204, 21, 0.30);
+    box-shadow:  0 18px 45px rgba(0, 0, 0, 0.45); 
+}
 
-            .report-card h5 {
-                color: white;
 
-            }
+.stat-card::after {
+    content: "";
+    position: absolute;
+    width: 120px;
+    height: 120px;
+    right: -60px;
+    top: -60px;
+    border-radius: 50%;
+    background:   rgba(250, 204, 21, 0.06);
+    pointer-events: none;
+}
 
-            @keyframes marquee {
-                from {
-                    transform: translateX(0);
-                }
 
-                to {
-                    transform: translateX(-100%);
-                }
-            }
+.stat-card h2 {
+    color: var(--gold);
+    font-weight: 800;
+    text-shadow:  0 0 18px rgba(250, 204, 21, 0.12);
+}
 
-            #jam {
-                font-size: 18px;
-                color: #facc15;
-                font-weight: bold;
-            }
+/* =========================================================
+   LOGIN PAGE
+========================================================= */
+.login-page {
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background:
+        radial-gradient(
+            circle at 20% 20%,
+            rgba(30, 64, 175, 0.14),
+            transparent 30%
+        ),
+        radial-gradient(
+            circle at 80% 80%,
+            rgba(250, 204, 21, 0.08),
+            transparent 30%
+        ),
+        linear-gradient(
+            135deg,
+            #05070b 0%,
+            #0f172a 55%,
+            #080b10 100%
+        );
+}
 
-            #hari,
-            #tanggal {
-                font-size: 14px;
-                color: #cbd5e1;
-            }
- 
+/* LOGIN BOX */
+.login-box {
+    width: 400px;
+    background:
+        linear-gradient(
+            145deg,
+            rgba(30, 41, 59, 0.98),
+            rgba(15, 23, 42, 0.98)
+        );
+
+    padding: 40px;
+    border-radius: 20px;
+    border:  1px solid rgba(250, 204, 21, 0.16);
+    box-shadow:   0 30px 80px rgba(0, 0, 0, 0.60);
+    position: relative;
+    overflow: hidden;
+}
+
+.login-box::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 15%;
+    right: 15%;
+    height: 1px;
+    background:
+        linear-gradient(
+            90deg,
+            transparent,
+            var(--gold),
+            transparent
+        );
+}
+
+/* =========================================================
+   DASHBOARD / MENU
+========================================================= */
+.dashboard { display: none;
+}
+.menu-page { display: none;
+}
+.active-page {  display: block; 
+}
+.menu-page.active-page {  display: block;
+}
+
+/* =========================================================
+   TABLE
+========================================================= */
+.table {
+    color: white;
+}
+
+/* table header */
+.table thead th {
+    color: var(--gold);
+    background:  rgba(250, 204, 21, 0.05);
+    border-bottom: 1px solid rgba(250, 204, 21, 0.20);
+}
+
+/* table body */
+.table tbody td {  border-color:  rgba(255, 255, 255, 0.06);
+}
+
+/* =========================================================
+   LOGO
+========================================================= */
+
+.app-logo {
+    height: 110px;
+    object-fit: contain;
+    display: block;
+    margin: 0 auto;
+    filter:
+        drop-shadow(
+            0 8px 18px rgba(0, 0, 0, 0.35)
+        );
+}
+
+
+.sidebar-logo {
+    height: 100px;
+    object-fit: contain;
+    display: block;
+    margin: 0 auto 15px auto;
+    filter:
+        drop-shadow(
+            0 8px 20px rgba(250, 204, 21, 0.08)
+        );
+}
+
+.topbar-logo {
+    height: 45px;
+    object-fit: contain;
+    filter:
+        drop-shadow(
+            0 4px 12px rgba(0, 0, 0, 0.30)
+        );
+}
+
+/* =========================================================
+   SECTION TITLE
+========================================================= */
+.section-subtitle {
+    color: var(--gold);
+    font-size: 24px;
+    font-weight: 800;
+    letter-spacing: 0.5px;
+    margin-top: 15px;
+    text-shadow:  0 0 18px rgba(250, 204, 21, 0.10);
+}
+
+/* =========================================================
+   SECTION DIVIDER
+========================================================= */
+.section-divider {
+    height: 1px;
+    background:
+        linear-gradient(
+            90deg,
+            rgba(250, 204, 21, 0.30),
+            rgba(255, 255, 255, 0.10),
+            transparent
+        );
+    opacity: 0.8;
+    margin: 5px 0 10px 0;
+    border-radius: 2px;
+}
+
+/* =========================================================
+   AUTO FIELD
+========================================================= */
+.form-control.auto-field,
+.form-control.auto-field:focus,
+.form-control.auto-field[readonly] {
+    background:
+        linear-gradient(
+            145deg,
+            #dfe3e8,
+            #cfd4da
+        ) !important;
+
+    color: #343a40 !important;
+    font-weight:  600;
+    border:  1px solid #9ca3af !important;
+    cursor:  not-allowed;
+    opacity:   1 !important;
+    box-shadow:  inset 0 1px 2px rgba(0, 0, 0, 0.08);
+}
+
+/* =========================================================
+   MARQUEE
+========================================================= */
+.marquee-container {
+    width: 70%;
+    overflow: hidden;
+    white-space: nowrap;
+}
+
+.marquee-text {
+    display: inline-block;
+    padding-left: 100%;
+    font-size: 24px;
+    font-weight: bold;
+    color: var(--gold);
+    text-shadow:  0 0 15px rgba(250, 204, 21, 0.15);
+    animation:  marquee 15s linear infinite;
+}
+
+/* =========================================================
+   REPORT GRID
+========================================================= */
+.report-grid {
+    display: grid;
+    grid-template-columns:  repeat(2, 1fr);
+    gap: 25px;
+    margin-top: 25px;
+}
+
+/* =========================================================
+   REPORT CARD
+========================================================= */
+.report-card {
+    background:
+        linear-gradient(
+            145deg,
+            #151d2b,
+            #0f1722
+        );
+
+    border: 1px solid rgba(250, 204, 21, 0.18);
+    border-radius: 12px;
+    text-align: center;
+    padding: 30px;
+    cursor: pointer;
+    transition: .3s;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+    position: relative;
+    overflow: hidden;
+}
+
+/* gold shine */
+.report-card::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 70%;
+    height: 100%;
+    background:
+        linear-gradient(
+            90deg,
+            transparent,
+            rgba(255, 255, 255, 0.035),
+            transparent
+        );
+    transform: skewX(-20deg);
+    transition:
+        left .6s ease;
+}
+
+.report-card:hover::before {
+    left: 130%;
+}
+
+.report-card:hover {
+    background:
+        linear-gradient(
+            145deg,
+            #1b2638,
+            #111827
+        );
+    border-color:  rgba(250, 204, 21, 0.40);
+    transform:  translateY(-5px);
+    box-shadow:
+        0 18px 45px rgba(0, 0, 0, 0.40),
+        0 0 25px rgba(250, 204, 21, 0.06);
+}
+
+.report-card i {
+    color:
+        var(--gold);
+    margin-bottom:
+        15px;
+    filter:
+        drop-shadow(
+            0 0 8px rgba(250, 204, 21, 0.15)
+        );
+}
+
+.report-card h5 {
+    color:
+        white;
+    font-weight:
+        700;
+}
+
+/* =========================================================
+   MARQUEE ANIMATION
+========================================================= */
+@keyframes marquee {
+    from {
+        transform:
+            translateX(0);
+    }
+
+    to {
+        transform:
+            translateX(-100%);
+    }
+}
+
+/* =========================================================
+   CLOCK
+========================================================= */
+
+#jam {
+    font-size: 18px;
+    color:  var(--gold);
+    font-weight:  bold;      
+    text-shadow:  0 0 12px rgba(250, 204, 21, 0.12);
+}
+
+#hari,
+#tanggal {
+    font-size: 14px;
+    color: #cbd5e1;
+      
+}
+
+/* =========================================================
+   SCROLLBAR
+========================================================= */
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background:
+        #080b10;
+}
+
+::-webkit-scrollbar-thumb {
+    background:
+        linear-gradient(
+            180deg,
+            #334155,
+            #1e293b
+        );
+    border-radius:  10px;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+        
+}
+::-webkit-scrollbar-thumb:hover {
+    background:
+        linear-gradient(
+            180deg,
+            #64748b,
+            #334155
+        );
+}
+
+/* =========================================================
+   SELECTION
+========================================================= */
+::selection {
+    background:
+        rgba(250, 204, 21, 0.25);
+
+    color:
+        #ffffff;
+}
