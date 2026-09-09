@@ -319,6 +319,7 @@ body {
 
 .stat-card h2 {
     color: var(--gold);
+    font-size: 24px;
     font-weight: 800;
     text-shadow:  0 0 18px rgba(250, 204, 21, 0.12);
 }
