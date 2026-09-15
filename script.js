@@ -6209,259 +6209,753 @@ import { getFirestore, collection, onSnapshot, addDoc, getDocs, updateDoc, delet
                             /* ============= LOAD STOCK CARD WAREHOUSE =========== */
                             /* =================================================== */
                             async function loadStockCardWarehouse() {
+
                                 try {
-                                    const start =
-                                        document.getElementById("stockCardStart").value;
-                                    const end =
-                                        document.getElementById("stockCardEnd").value;
-                                    // =========================
+
+                                    // ====================================================
+                                    // HELPER FORMAT ANGKA
+
+                                    // ====================================================
+                                    function formatNumber(value) {
+                                        return Number(value || 0).toLocaleString("id-ID", {
+                                            minimumFractionDigits: 2,
+                                            maximumFractionDigits: 2
+
+                                        });
+
+                                    }
+
+                                    // ====================================================
+                                    // GET FILTER
+                                    // ====================================================
+
+                                    const month =
+                                        document.getElementById("stockCardMonth").value;
+
+                                    const year =
+                                        document.getElementById("stockCardYear").value;
+
+
+                                    // ====================================================
+                                    // VALIDASI FILTER
+                                    // ====================================================
+
+                                    if (
+                                        (month && !year) ||
+                                        (!month && year)
+                                    ) {
+
+                                        alert("Please select both Month and Year.");
+
+                                        return;
+                                    }
+
+
+                                    // ====================================================
+                                    // MODE
+                                    // ====================================================
+
+                                    const isFiltered =
+                                        !!(month && year);
+
+
+                                    // ====================================================
                                     // LOAD MASTER MATERIAL
-                                    // =========================
+                                    // ====================================================
+
                                     const materialSnap =
                                         await getDocs(
                                             query(
+
                                                 collection(db, "materials"),
                                                 orderBy("code", "asc")
                                             )
                                         );
 
-                                    // =========================
-                                    // LOAD STOCK AWAL
-                                    // =========================
+
+                                    // ====================================================
+                                    // LOAD STOCK CARD
+                                    // ====================================================
                                     const stockAwalSnap =
                                         await getDocs(
+
                                             collection(db, "stock_card")
+
                                         );
 
-                                    // =========================
-                                    // LOAD PURCHASE ORDER
-                                    // =========================
-                                    let poQuery;
-                                    if (start && end) {
-                                        poQuery = query(
-                                            collection(db, "purchasing"),
-                                            where("date", ">=", start),
-                                            where("date", "<=", end)
-                                        );
+                                    let stockAwalMap = {};
+                                    stockAwalSnap.forEach(d => {
+
+                                        const item =
+                                            d.data();
+
+                                        const code =
+                                            String(
+                                                item.code || ""
+                                            ).trim();
+
+                                        const weight =
+                                            Number(
+                                                item.weight || 0
+                                            );
+
+                                        if (code) {
+
+                                            stockAwalMap[code] =
+                                                (
+                                                    stockAwalMap[code] || 0
+                                                )
+                                                +
+                                                weight;
+
+                                        }
+
+                                    });
+
+
+                                    // ====================================================
+                                    // TENTUKAN PERIODE TRANSAKSI
+                                    // ====================================================
+                                    let transactionStartDate;
+                                    let transactionEndDate;
+
+                                    if (isFiltered) {
+
+                                        // =================================================
+                                        // FILTERED
+                                        // END EXCLUSIVE
+                                        // =================================================
+
+                                        transactionStartDate =
+                                            `${year}-${month}-01`;
+
+                                        const nextMonthDate =
+                                            new Date(
+
+                                                Number(year),
+                                                Number(month),
+                                                1
+                                            );
+
+
+                                        const nextYear =
+                                            nextMonthDate.getFullYear();
+
+                                        const nextMonth =
+                                            String(
+
+                                                nextMonthDate.getMonth() + 1
+
+                                            ).padStart(2, "0");
+
+
+                                        transactionEndDate =
+                                            `${nextYear}-${nextMonth}-01`;
+
 
                                     } else {
 
-                                        poQuery =
-                                            collection(db, "purchasing");
+                                        // =================================================
+                                        // TANPA FILTER
+                                        //
+                                        // Semua transaksi
+                                        // =================================================
+
+                                        transactionStartDate =
+                                            "0001-01-01";
+
+
+                                        const tomorrow =
+                                            new Date();
+
+
+                                        tomorrow.setDate(
+
+                                            tomorrow.getDate() + 1
+
+                                        );
+
+
+                                        transactionEndDate =
+                                            tomorrow
+                                                .toISOString()
+                                                .split("T")[0];
 
                                     }
+
+
+                                    console.log(
+                                        "Stock Card Mode:",
+                                        isFiltered
+                                            ? "FILTERED"
+                                            : "NO FILTER"
+                                    );
+
+
+                                    console.log(
+                                        "Transaction Period:",
+                                        transactionStartDate,
+                                        "until",
+                                        transactionEndDate
+                                    );
+
+
+                                    // ====================================================
+                                    // LOAD PURCHASE ORDER
+                                    // ====================================================
+
+                                    const poQuery =
+                                        query(
+
+                                            collection(
+                                                db,
+                                                "purchasing"
+                                            ),
+
+                                            where(
+                                                "date",
+                                                ">=",
+                                                transactionStartDate
+                                            ),
+
+                                            where(
+                                                "date",
+                                                "<",
+                                                transactionEndDate
+                                            )
+
+                                        );
+
 
                                     const poSnap =
-                                        await getDocs(poQuery);
-
-                                    // =========================
-                                    // LOAD PRODUKSI
-                                    // =========================
-                                    let produksiQuery;
-                                    if (start && end) {
-
-                                        produksiQuery = query(
-                                            collection(db, "production_orders"),
-                                            where("date", ">=", start),
-                                            where("date", "<=", end)
+                                        await getDocs(
+                                            poQuery
                                         );
-                                    } else {
-                                        produksiQuery =
-                                            collection(db, "production_orders");
-                                    }
+
+
+                                    // ====================================================
+                                    // LOAD PRODUKSI
+                                    // ====================================================
+
+                                    const produksiQuery =
+                                        query(
+
+                                            collection(
+                                                db,
+                                                "production_orders"
+                                            ),
+
+                                            where(
+                                                "date",
+                                                ">=",
+                                                transactionStartDate
+                                            ),
+
+                                            where(
+                                                "date",
+                                                "<",
+                                                transactionEndDate
+                                            )
+
+                                        );
+
+
                                     const produksiSnap =
-                                        await getDocs(produksiQuery);
-                                    // =========================
+                                        await getDocs(
+                                            produksiQuery
+                                        );
+
+
+                                    // ====================================================
                                     // LOAD PRODUCT RECIPES
-                                    // =========================
+                                    // ====================================================
+
                                     const recipeSnap =
                                         await getDocs(
-                                            collection(db, "product_recipes")
+
+                                            collection(
+                                                db,
+                                                "product_recipes"
+                                            )
+
                                         );
+
+
+                                    // ====================================================
+                                    // LOAD PRICE FG
+                                    // ====================================================
 
                                     const priceFgSnap =
                                         await getDocs(
-                                            collection(db, "price_fg")
+
+                                            collection(
+                                                db,
+                                                "price_fg"
+                                            )
+
                                         );
 
-                                    let productionResultQuery;
 
-                                    if (start && end) {
-                                        productionResultQuery = query(
-                                            collection(db, "production_results"),
-                                            where("date", ">=", start),
-                                            where("date", "<=", end)
+                                    // ====================================================
+                                    // LOAD PRODUCTION RESULTS
+                                    // ====================================================
+
+                                    const productionResultQuery =
+                                        query(
+
+                                            collection(
+                                                db,
+                                                "production_results"
+                                            ),
+
+                                            where(
+                                                "date",
+                                                ">=",
+                                                transactionStartDate
+                                            ),
+
+                                            where(
+                                                "date",
+                                                "<",
+                                                transactionEndDate
+                                            )
+
                                         );
-                                    } else {
-                                        productionResultQuery =
-                                            collection(db, "production_results");
-                                    }
+
 
                                     const productionResultSnap =
-                                        await getDocs(productionResultQuery);
+                                        await getDocs(
+                                            productionResultQuery
+                                        );
 
-                                    // =========================
+
+                                    // ====================================================
                                     // LOAD WASTE
-                                    // =========================
-                                    let wasteQuery;
-                                    if (start && end) {
-                                        wasteQuery = query(
-                                            collection(db, "waste_material"),
-                                            where("date", ">=", start),
-                                            where("date", "<=", end)
+                                    // ====================================================
+
+                                    const wasteQuery =
+                                        query(
+
+                                            collection(
+                                                db,
+                                                "waste_material"
+                                            ),
+
+                                            where(
+                                                "date",
+                                                ">=",
+                                                transactionStartDate
+                                            ),
+
+                                            where(
+                                                "date",
+                                                "<",
+                                                transactionEndDate
+                                            )
+
                                         );
 
-                                    } else {
-                                        wasteQuery =
-                                            collection(db, "waste_material");
 
-                                    }
                                     const wasteSnap =
-                                        await getDocs(wasteQuery);
-
-                                    // =========================
-                                    // LOAD STOCK OPNAME
-                                    // =========================
-                                    let soQuery;
-                                    if (start && end) {
-
-                                        soQuery = query(
-                                            collection(db, "stock_opname"),
-                                            where("soDate", ">=", start),
-                                            where("soDate", "<=", end)
+                                        await getDocs(
+                                            wasteQuery
                                         );
 
-                                    } else {
 
-                                        soQuery =
-                                            collection(db, "stock_opname");
+                                    // ====================================================
+                                    // LOAD STOCK OPNAME
+                                    // ====================================================
 
-                                    }
                                     const soSnap =
-                                        await getDocs(soQuery);
+                                        await getDocs(
+
+                                            collection(
+                                                db,
+                                                "stock_opname"
+                                            )
+
+                                        );
+
 
                                     // ====================================================
                                     // MAPPING
                                     // ====================================================
-                                    let stockAwalMap = {};
                                     let poMap = {};
                                     let produksiMap = {};
                                     let wasteMap = {};
-                                    let soMap = {};
-                                    let boxMap = {};
+                                    let lastStockMap = {};
+                                    let newSOMap = {};
+                                    let allSOMap = {};
 
-                                    // STOCK AWAL
-                                    stockAwalSnap.forEach(d => {
+                                    // ====================================================
+                                    // PURCHASE ORDER
+                                    // ====================================================
+                                    poSnap.forEach(d => {
+                                        const item =
+                                            d.data();
 
-                                        const item = d.data();
+                                        const materialCode =
+                                            String(
+                                                item.materialCode || ""
+                                            ).trim();
+
+
+                                        if (materialCode) {
+                                            poMap[materialCode] =
+                                                (
+                                                    poMap[materialCode] || 0
+                                                )
+                                                +
+                                                Number(
+                                                    item.qty || 0
+                                                );
+
+                                        }
+
+                                    });
+
+
+                                    // ====================================================
+                                    // PRODUKSI BERDASARKAN RECIPE
+                                    // ====================================================
+
+                                    produksiSnap.forEach(
+                                        prodDoc => {
+
+                                            const prod =
+                                                prodDoc.data();
+
+                                            const productCode =
+                                                String(
+                                                    prod.productCode || ""
+                                                ).trim();
+
+
+                                            const qtyProduction =
+                                                Number(
+                                                    prod.qtyProduction || 0
+                                                );
+
+                                            recipeSnap.forEach(
+                                                recipeDoc => {
+
+                                                    const recipe =
+                                                        recipeDoc.data();
+
+
+                                                    const recipeProductCode =
+                                                        String(
+                                                            recipe.productCode || ""
+                                                        ).trim();
+
+                                                    if (
+                                                        recipeProductCode
+                                                        ===
+                                                        productCode
+                                                    ) {
+
+                                                        const materialName =
+                                                            String(
+                                                                recipe.material || ""
+                                                            ).trim();
+
+
+                                                        const recipeQty =
+                                                            Number(
+                                                                recipe.qty || 0
+                                                            );
+
+
+                                                        const totalUsage =
+                                                            qtyProduction
+                                                            *
+                                                            recipeQty;
+
+
+                                                        produksiMap[
+                                                            materialName
+                                                        ] =
+                                                            (
+                                                                produksiMap[
+                                                                materialName
+                                                                ] || 0
+                                                            )
+                                                            +
+                                                            totalUsage;
+
+                                                    }
+
+                                                }
+                                            );
+
+                                        }
+                                    );
+
+
+                                    // ====================================================
+                                    // PEMAKAIAN BOX DARI HASIL PRODUKSI
+                                    // ====================================================
+
+                                    productionResultSnap.forEach(
+                                        resultDoc => {
+
+                                            const result =
+                                                resultDoc.data();
+
+
+                                            const productCode =
+                                                String(
+                                                    result.productCode || ""
+                                                ).trim();
+
+
+                                            const fgBox =
+                                                Number(
+                                                    result.fgBox || 0
+                                                );
+
+
+                                            priceFgSnap.forEach(
+                                                priceDoc => {
+
+                                                    const price =
+                                                        priceDoc.data();
+
+
+                                                    const priceProductCode =
+                                                        String(
+                                                            price.productCode || ""
+                                                        ).trim();
+
+
+                                                    if (
+                                                        priceProductCode
+                                                        ===
+                                                        productCode
+                                                    ) {
+
+                                                        const boxName =
+                                                            String(
+                                                                price.materialName || ""
+                                                            ).trim();
+
+
+                                                        produksiMap[
+                                                            boxName
+                                                        ] =
+                                                            (
+                                                                produksiMap[
+                                                                boxName
+                                                                ] || 0
+                                                            )
+                                                            +
+                                                            fgBox;
+
+                                                    }
+
+                                                }
+                                            );
+
+                                        }
+                                    );
+
+
+                                    // ====================================================
+                                    // WASTE MATERIAL
+                                    // ====================================================
+                                    wasteSnap.forEach(d => {
+                                        const item =
+                                            d.data();
+
+                                        const materialName =
+                                            String(
+                                                item.materialName || ""
+                                            ).trim();
+
+                                        if (materialName) {
+                                            wasteMap[
+                                                materialName
+                                            ] =
+                                                (
+                                                    wasteMap[
+                                                    materialName
+                                                    ] || 0
+                                                )
+                                                +
+                                                Number(
+                                                    item.qty || 0
+                                                );
+
+                                        }
+
+                                    });
+
+
+                                    // ====================================================
+                                    // STOCK OPNAME
+                                    // ====================================================
+                                    soSnap.forEach(d => {
+
+                                        const item =
+                                            d.data();
 
                                         const code =
-                                            String(item.code).trim();
+                                            String(
+                                                item.code || ""
+                                            ).trim();
 
-                                        stockAwalMap[code] =
-                                            (stockAwalMap[code] || 0)
-                                            + Number(item.weight || 0);
 
-                                    });
+                                        const soDate =
+                                            String(
+                                                item.soDate || ""
+                                            ).trim();
 
-                                    // PURCHASE ORDER
-                                    poSnap.forEach(d => {
-                                        const item = d.data();
-                                        const materialCode =
-                                            String(item.materialCode || "").trim();
-                                        poMap[materialCode] =
-                                            (poMap[materialCode] || 0)
-                                            + Number(item.qty || 0);
 
-                                    });
-                                    // =========================
-                                    // PRODUKSI BERDASARKAN RECIPE
-                                    // =========================
-                                    produksiSnap.forEach(prodDoc => {
-                                        const prod = prodDoc.data();
-                                        const productCode =
-                                            String(prod.productCode || "").trim();
-                                        const qtyProduction =
-                                            Number(prod.qtyProduction || 0);
+                                        const weight =
+                                            Number(
+                                                item.weight || 0
+                                            );
 
-                                        // cari recipe product
-                                        recipeSnap.forEach(recipeDoc => {
-                                            const recipe = recipeDoc.data();
-                                            // hanya recipe product terkait
-                                            if (
-                                                String(recipe.productCode).trim()
-                                                === productCode
-                                            ) {
-                                                const materialName =
-                                                    String(recipe.material || "").trim();
-                                                // qty recipe per pcs
-                                                const recipeQty =
-                                                    Number(recipe.qty || 0);
-                                                // total pemakaian bahan baku
-                                                const totalUsage =
-                                                    qtyProduction * recipeQty;
-
-                                                produksiMap[materialName] =
-                                                    (produksiMap[materialName] || 0)
-                                                    + totalUsage;
-                                            }
-                                        });
-                                    });
-                                    // =========================
-                                    // PEMAKAIAN BOX DARI HASIL PRODUKSI
-                                    // =========================
-                                    productionResultSnap.forEach(resultDoc => {
-                                        const result = resultDoc.data();
-                                        const productCode =
-                                            String(result.productCode || "").trim();
-                                        const fgBox =
-                                            Number(result.fgBox || 0);
-                                        priceFgSnap.forEach(priceDoc => {
-                                            const price = priceDoc.data();
-                                            if (
-                                                String(price.productCode || "").trim()
-                                                === productCode
-                                            ) {
-                                                const boxName =
-                                                    String(price.materialName || "").trim();
-                                                produksiMap[boxName] =
-                                                    (produksiMap[boxName] || 0)
-                                                    + fgBox;
-                                            }
-                                        });
-
-                                    });
-
-                                    // =========================
-                                    // WASTE MATERIAL
-                                    // =========================
-                                    wasteSnap.forEach(d => {
-                                        const item = d.data();
-                                        const materialName =
-                                            String(item.materialName || "").trim();
-                                        wasteMap[materialName] =
-                                            (wasteMap[materialName] || 0)
-                                            + Number(item.qty || 0);
-
-                                    });
-
-                                    // STOCK OPNAME
-                                    soSnap.forEach(d => {
-                                        const item = d.data();
-                                        const code = String(item.code || "").trim();
-                                        const soDate = item.soDate;
-                                        const weight = Number(item.weight || 0);
 
                                         if (
-                                            !soMap[code] ||
-                                            soDate > soMap[code].date
+                                            !code ||
+                                            !soDate
                                         ) {
-                                            soMap[code] = {
+
+                                            return;
+
+                                        }
+
+
+                                        // =================================================
+                                        // SO TERAKHIR KESELURUHAN
+                                        // =================================================
+
+                                        if (
+                                            !allSOMap[code] ||
+                                            soDate >
+                                            allSOMap[code].date
+                                        ) {
+
+                                            allSOMap[code] = {
                                                 date: soDate,
                                                 weight: weight
+
                                             };
+
                                         }
+
+                                        // =================================================
+                                        // CARI SO SEBELUM BULAN FILTER
+                                        // =================================================
+
+                                        if (isFiltered) {
+
+                                            if (
+                                                soDate <
+                                                transactionStartDate
+                                            ) {
+
+                                                if (
+                                                    !lastStockMap[code] ||
+                                                    soDate >
+                                                    lastStockMap[code].date
+                                                ) {
+
+                                                    lastStockMap[code] = {
+
+                                                        date: soDate,
+
+                                                        weight: weight
+
+                                                    };
+
+                                                }
+
+                                            }
+
+                                            // =================================================
+                                            // SO DALAM BULAN FILTER
+                                            // =================================================
+
+                                            if (
+                                                soDate >=
+                                                transactionStartDate
+                                                &&
+                                                soDate <
+                                                transactionEndDate
+                                            ) {
+
+                                                if (
+                                                    !newSOMap[code] ||
+                                                    soDate >
+                                                    newSOMap[code].date
+                                                ) {
+
+                                                    newSOMap[code] = {
+
+                                                        date: soDate,
+
+                                                        weight: weight
+
+                                                    };
+
+                                                }
+
+                                            }
+
+                                        }
+
                                     });
+
+
+                                    // ====================================================
+                                    // JIKA TIDAK ADA FILTER
+                                    //
+                                    // LAST STOCK = STOCK CARD AWAL
+                                    // ====================================================
+
+                                    if (!isFiltered) {
+
+                                        Object.keys(
+                                            stockAwalMap
+                                        ).forEach(code => {
+
+                                            lastStockMap[code] = {
+
+                                                date: null,
+
+                                                weight:
+                                                    stockAwalMap[code]
+
+                                            };
+
+                                        });
+
+                                    }
+
+
+                                    // ====================================================
+                                    // DEBUG
+                                    // ====================================================
+
+                                    console.log(
+                                        "Last Stock Map:",
+                                        lastStockMap
+                                    );
+
+
+                                    console.log(
+                                        "New SO Map:",
+                                        newSOMap
+                                    );
+
+
+                                    console.log(
+                                        "All SO Map:",
+                                        allSOMap
+                                    );
+
 
                                     // ====================================================
                                     // GENERATE TABLE
@@ -6469,91 +6963,267 @@ import { getFirestore, collection, onSnapshot, addDoc, getDocs, updateDoc, delet
                                     let html = "";
                                     let totalValue = 0;
                                     let totalData = 0;
+
                                     materialSnap.forEach(d => {
-                                        const mat = d.data();
-                                        const code = String(mat.code).trim();
-                                        const average = Number(mat.average || 0);
 
-                                        // =========================
-                                        // QTY
-                                        // =========================
-                                        const qtyStockAwal = stockAwalMap[code] || 0;
-                                        const qtyPO = poMap[mat.code] || 0;
-                                        const qtyProduksi = produksiMap[mat.name] || 0;
-                                        const qtyWaste = wasteMap[mat.name] || 0;
+                                        const mat =
+                                            d.data();
 
-                                        // STOCK AKHIR
+
+                                        const code =
+                                            String(
+                                                mat.code || ""
+                                            ).trim();
+
+
+                                        const name =
+                                            String(
+                                                mat.name || ""
+                                            ).trim();
+
+
+                                        const average =
+                                            Number(
+                                                mat.average || 0
+                                            );
+
+
+                                        // =================================================
+                                        // LAST STOCK
+                                        //
+                                        // NO FILTER:
+                                        //    dari stock_card
+                                        //
+                                        // FILTER:
+                                        //    dari SO bulan sebelumnya
+                                        // =================================================
+
+                                        const qtyStockAwal =
+                                            lastStockMap[code]?.weight || 0;
+
+
+                                        // =================================================
+                                        // PO
+                                        // =================================================
+
+                                        const qtyPO =
+                                            poMap[code] || 0;
+
+
+                                        // =================================================
+                                        // PRODUCTION
+                                        // =================================================
+
+                                        const qtyProduksi =
+                                            produksiMap[name] || 0;
+
+
+                                        // =================================================
+                                        // WASTE
+                                        // =================================================
+
+                                        const qtyWaste =
+                                            wasteMap[name] || 0;
+
+
+                                        // =================================================
+                                        // NEW STOCK
+                                        // =================================================
+
                                         const qtyStockAkhir =
+
                                             qtyStockAwal
+
                                             + qtyPO
+
                                             - qtyProduksi
+
                                             - qtyWaste;
 
-                                        // SO AKHIR
-                                        const qtySOAkhir =
-                                            soMap[code]?.weight || 0;
 
-                                        // SELISIH
+                                        // =================================================
+                                        // NEW SO
+                                        //
+                                        // NO FILTER:
+                                        //    SO terakhir keseluruhan
+                                        //
+                                        // FILTER:
+                                        //    SO terakhir pada bulan filter
+                                        // =================================================
+
+                                        let qtySOAkhir = 0;
+
+
+                                        if (isFiltered) {
+
+                                            qtySOAkhir =
+                                                newSOMap[code]?.weight || 0;
+
+                                        } else {
+
+                                            qtySOAkhir =
+                                                allSOMap[code]?.weight || 0;
+
+                                        }
+
+
+                                        // =================================================
+                                        // DIFFERENCE
+                                        // =================================================
+
                                         const qtySelisih =
                                             qtyStockAkhir
-                                            - qtySOAkhir;
+                                            -
+                                            qtySOAkhir;
 
+
+                                        // =================================================
                                         // VALUE
+                                        // =================================================
+
                                         const value =
-                                            qtySelisih * average;
+                                            qtySelisih
+                                            *
+                                            average;
+
                                         totalValue += value;
                                         totalData++;
-                                        html += `
-                <tr>
-                    <td>${mat.code}</td>
-                    <td>${mat.name}</td>
-                    <td>${mat.unit}</td>
-                    <td>${qtyStockAwal.toLocaleString()}</td>
-                    <td>${qtyPO.toLocaleString()}</td>
-                    <td>${qtyProduksi.toLocaleString()} </td>
-                    <td>${qtyWaste.toLocaleString()}</td>                  
-                    <td class="text-info fw-bold"> ${qtyStockAkhir.toLocaleString()}</td>
-                    <td class="text-warning fw-bold">${qtySOAkhir.toLocaleString()} </td>
 
-                    <td class="
-                        ${qtySelisih !== 0
-                                                ? 'text-danger fw-bold'
-                                                : 'text-success'}
-                    ">
-                        ${qtySelisih.toLocaleString()}
+                                        // =================================================
+                                        // GENERATE HTML
+                                        // =================================================
+
+                                        html += `
+
+                <tr>
+
+                    <td>
+                        ${mat.code}
                     </td>
                     <td>
-                        Rp ${value.toLocaleString()}
+                        ${mat.name}
                     </td>
+                    <td>
+                        ${mat.unit}
+                    </td>
+                    <td>
+                        ${formatNumber(
+                                            qtyStockAwal
+                                        )}
+                    </td>
+
+                    <td>
+                        ${formatNumber(
+                                            qtyPO
+                                        )}
+                    </td>
+
+                    <td>
+                        ${formatNumber(
+                                            qtyProduksi
+                                        )}
+                    </td>
+
+                    <td>
+                        ${formatNumber(
+                                            qtyWaste
+                                        )}
+                    </td>
+
+                    <td class="text-info fw-bold">
+                        ${formatNumber(
+                                            qtyStockAkhir
+                                        )}
+                    </td>
+
+                    <td class="text-warning fw-bold">
+                        ${formatNumber(
+                                            qtySOAkhir
+                                        )}
+                    </td>
+
+                    <td class="
+                        ${Math.abs(qtySelisih) > 0.000001
+                                                ? "text-danger fw-bold"
+                                                : "text-success"
+                                            }
+                    ">
+                        ${formatNumber(
+                                                qtySelisih
+                                            )}
+                    </td>
+
+                    <td>
+                        Rp ${formatNumber(
+                                                value
+                                            )}
+                    </td>
+
                 </tr>
+
             `;
 
                                     });
 
-                                    // TABLE
-                                    document.getElementById("stockCardTable")
-                                        .innerHTML = html;
+
+                                    // ====================================================
+                                    // UPDATE TABLE
+                                    // ====================================================
+
+                                    document.getElementById(
+                                        "stockCardTable"
+                                    ).innerHTML =
+                                        html;
+
+
+                                    // ====================================================
                                     // TOTAL VALUE
-                                    document.getElementById("stockCardTotalValue").innerHTML =
-                                    "Rp " +
-                                    totalValue.toLocaleString("id-ID", {
-                                        minimumFractionDigits: 2,
-                                        maximumFractionDigits: 2
-                                    });
+                                    // ====================================================
+
+                                    document.getElementById(
+                                        "stockCardTotalValue"
+                                    ).innerHTML =
+                                        "Rp " +
+                                        formatNumber(
+                                            totalValue
+                                        );
+
+
+                                    // ====================================================
                                     // TOTAL DATA
-                                    document.getElementById("stockCardTotalData")
-                                        .innerHTML =
-                                        totalData.toLocaleString();
+                                    // ====================================================
+
+                                    document.getElementById(
+                                        "stockCardTotalData"
+                                    ).innerHTML =
+                                        totalData.toLocaleString(
+                                            "id-ID"
+                                        );
+
+
                                 } catch (err) {
-                                    console.error("StockCard Error:", err);
+
+                                    console.error(
+                                        "StockCard Error:",
+                                        err
+                                    );
+
+
+                                    alert(
+                                        "Failed to load Stock Card."
+                                    );
+
                                 }
+
                             }
 
                             /* =====================================================
-                                PRINT PDF STOCK CARD
+                            PRINT PDF STOCK CARD
                             ===================================================== */
+
                             async function printStockCardPDF() {
-                                const { jsPDF } = window.jspdf;
+                                const {jsPDF} = window.jspdf;
+
                                 const doc =
                                     new jsPDF(
                                         "landscape",
@@ -6561,33 +7231,43 @@ import { getFirestore, collection, onSnapshot, addDoc, getDocs, updateDoc, delet
                                         "a4"
                                     );
 
+
                                 // =========================
-                                // FILTER
+                                // FILTER MONTH & YEAR
                                 // =========================
-                                const start =
+                                const month =
                                     document.getElementById(
-                                        "stockCardStart"
+                                        "stockCardMonth"
                                     ).value;
-                                const end =
+
+                                const year =
                                     document.getElementById(
-                                        "stockCardEnd"
+                                        "stockCardYear"
                                     ).value;
+
 
                                 // =========================
                                 // GET TABLE DATA
                                 // =========================
+
                                 const rows = [];
                                 const grandTotal =
-                                    document.getElementById("stockCardTotalValue")
-                                        .innerText;
+                                    document.getElementById(
+                                        "stockCardTotalValue"
+                                    ).innerText;
+
+
                                 document.querySelectorAll(
                                     "#stockCardTable tr"
-
                                 ).forEach(tr => {
+
                                     const cols =
                                         tr.querySelectorAll("td");
+
                                     if (cols.length > 0) {
+
                                         rows.push([
+
                                             cols[0].innerText,
                                             cols[1].innerText,
                                             cols[2].innerText,
@@ -6599,10 +7279,13 @@ import { getFirestore, collection, onSnapshot, addDoc, getDocs, updateDoc, delet
                                             cols[8].innerText,
                                             cols[9].innerText,
                                             cols[10].innerText
+
                                         ]);
 
                                     }
+
                                 });
+
 
                                 // =========================
                                 // HEADER
@@ -6615,37 +7298,74 @@ import { getFirestore, collection, onSnapshot, addDoc, getDocs, updateDoc, delet
                                 );
 
                                 doc.setFontSize(11);
+
+                                // =========================
                                 // PERIODE
+                                // =========================
                                 let periodeText = "-";
                                 let tahunText = "-";
-                                if (start) {
-                                    const d = new Date(start);
+                                const monthNames = {
+
+                                    "01": "January",
+                                    "02": "February",
+                                    "03": "March",
+                                    "04": "April",
+                                    "05": "May",
+                                    "06": "June",
+                                    "07": "July",
+                                    "08": "August",
+                                    "09": "September",
+                                    "10": "October",
+                                    "11": "November",
+                                    "12": "December"
+
+                                };
+
+
+                                if (month && year) {
+
                                     periodeText =
-                                        d.toLocaleString("id-ID", {
-                                            month: "long"
-                                        });
+                                        monthNames[month];
 
                                     tahunText =
-                                        d.getFullYear();
+                                        year;
+
                                 }
+
+
                                 doc.text(
                                     `PERIODE Bulan : ${periodeText}   Tahun : ${tahunText}`,
                                     40,
                                     65
                                 );
 
+
+                                // =========================
                                 // PRINT DATE
-                                const now = new Date();
+                                // =========================
+
+                                const now =
+                                    new Date();
+
                                 const printDate =
-                                    now.toLocaleDateString("id-ID");
+                                    now.toLocaleDateString(
+                                        "id-ID"
+                                    );
+
+
                                 doc.text(
                                     `Print Date : ${printDate}`,
                                     650,
                                     65
                                 );
+
+
+                                // =========================
                                 // TOTAL VALUE
+                                // =========================
+
                                 doc.text(
-                                    `Total Value Selisih : Rp ${grandTotal.toLocaleString()}`,
+                                    `Total Value Selisih : ${grandTotal}`,
                                     40,
                                     85
                                 );
@@ -6656,6 +7376,7 @@ import { getFirestore, collection, onSnapshot, addDoc, getDocs, updateDoc, delet
                                 doc.autoTable({
                                     startY: 110,
                                     head: [[
+
                                         "Kode",
                                         "Nama Bahan",
                                         "UOM",
@@ -6667,25 +7388,34 @@ import { getFirestore, collection, onSnapshot, addDoc, getDocs, updateDoc, delet
                                         "SO Akhir",
                                         "Selisih",
                                         "Value"
+
                                     ]],
+
                                     body: rows,
                                     theme: "grid",
                                     styles: {
                                         fontSize: 8
+
                                     },
-
                                     headStyles: {
-                                        fillColor: [40, 40, 40]
+                                        fillColor: [
+                                            40,
+                                            40,
+                                            40
+                                        ]
                                     }
-
                                 });
+
                                 // =========================
                                 // SAVE PDF
                                 // =========================
+
                                 doc.save(
-                                    "Stock-Card-Warehouse.pdf"
+                                    "Stock-Card-Warehouse-Made-Bali.pdf"
                                 );
+
                             }
+
                             window.printStockCardPDF =
                                 printStockCardPDF;
 
