@@ -6312,13 +6312,11 @@ import { getFirestore, collection, onSnapshot, addDoc, getDocs, updateDoc, delet
 
                                     });
 
-
                                     // ====================================================
                                     // TENTUKAN PERIODE TRANSAKSI
                                     // ====================================================
                                     let transactionStartDate;
                                     let transactionEndDate;
-
                                     if (isFiltered) {
 
                                         // =================================================
@@ -6337,18 +6335,12 @@ import { getFirestore, collection, onSnapshot, addDoc, getDocs, updateDoc, delet
                                                 1
                                             );
 
-
                                         const nextYear =
                                             nextMonthDate.getFullYear();
-
                                         const nextMonth =
                                             String(
-
                                                 nextMonthDate.getMonth() + 1
-
                                             ).padStart(2, "0");
-
-
                                         transactionEndDate =
                                             `${nextYear}-${nextMonth}-01`;
 
@@ -6360,21 +6352,14 @@ import { getFirestore, collection, onSnapshot, addDoc, getDocs, updateDoc, delet
                                         //
                                         // Semua transaksi
                                         // =================================================
-
                                         transactionStartDate =
                                             "0001-01-01";
-
-
                                         const tomorrow =
                                             new Date();
-
-
                                         tomorrow.setDate(
-
                                             tomorrow.getDate() + 1
 
                                         );
-
 
                                         transactionEndDate =
                                             tomorrow
@@ -6382,7 +6367,6 @@ import { getFirestore, collection, onSnapshot, addDoc, getDocs, updateDoc, delet
                                                 .split("T")[0];
 
                                     }
-
 
                                     console.log(
                                         "Stock Card Mode:",
@@ -6403,7 +6387,6 @@ import { getFirestore, collection, onSnapshot, addDoc, getDocs, updateDoc, delet
                                     // ====================================================
                                     // LOAD PURCHASE ORDER
                                     // ====================================================
-
                                     const poQuery =
                                         query(
 
@@ -6436,7 +6419,6 @@ import { getFirestore, collection, onSnapshot, addDoc, getDocs, updateDoc, delet
                                     // ====================================================
                                     // LOAD PRODUKSI
                                     // ====================================================
-
                                     const produksiQuery =
                                         query(
 
@@ -6469,7 +6451,6 @@ import { getFirestore, collection, onSnapshot, addDoc, getDocs, updateDoc, delet
                                     // ====================================================
                                     // LOAD PRODUCT RECIPES
                                     // ====================================================
-
                                     const recipeSnap =
                                         await getDocs(
 
@@ -6499,7 +6480,6 @@ import { getFirestore, collection, onSnapshot, addDoc, getDocs, updateDoc, delet
                                     // ====================================================
                                     // LOAD PRODUCTION RESULTS
                                     // ====================================================
-
                                     const productionResultQuery =
                                         query(
 
@@ -6565,7 +6545,6 @@ import { getFirestore, collection, onSnapshot, addDoc, getDocs, updateDoc, delet
                                     // ====================================================
                                     // LOAD STOCK OPNAME
                                     // ====================================================
-
                                     const soSnap =
                                         await getDocs(
 
@@ -6618,7 +6597,6 @@ import { getFirestore, collection, onSnapshot, addDoc, getDocs, updateDoc, delet
                                     // ====================================================
                                     // PRODUKSI BERDASARKAN RECIPE
                                     // ====================================================
-
                                     produksiSnap.forEach(
                                         prodDoc => {
 
@@ -6695,7 +6673,6 @@ import { getFirestore, collection, onSnapshot, addDoc, getDocs, updateDoc, delet
                                     // ====================================================
                                     // PEMAKAIAN BOX DARI HASIL PRODUKSI
                                     // ====================================================
-
                                     productionResultSnap.forEach(
                                         resultDoc => {
 
@@ -6759,7 +6736,6 @@ import { getFirestore, collection, onSnapshot, addDoc, getDocs, updateDoc, delet
                                         }
                                     );
 
-
                                     // ====================================================
                                     // WASTE MATERIAL
                                     // ====================================================
@@ -6789,7 +6765,6 @@ import { getFirestore, collection, onSnapshot, addDoc, getDocs, updateDoc, delet
                                         }
 
                                     });
-
 
                                     // ====================================================
                                     // STOCK OPNAME
@@ -6826,7 +6801,6 @@ import { getFirestore, collection, onSnapshot, addDoc, getDocs, updateDoc, delet
 
                                         }
 
-
                                         // =================================================
                                         // SO TERAKHIR KESELURUHAN
                                         // =================================================
@@ -6848,7 +6822,6 @@ import { getFirestore, collection, onSnapshot, addDoc, getDocs, updateDoc, delet
                                         // =================================================
                                         // CARI SO SEBELUM BULAN FILTER
                                         // =================================================
-
                                         if (isFiltered) {
 
                                             if (
@@ -6863,15 +6836,11 @@ import { getFirestore, collection, onSnapshot, addDoc, getDocs, updateDoc, delet
                                                 ) {
 
                                                     lastStockMap[code] = {
-
                                                         date: soDate,
-
                                                         weight: weight
 
                                                     };
-
                                                 }
-
                                             }
 
                                             // =================================================
@@ -6908,7 +6877,6 @@ import { getFirestore, collection, onSnapshot, addDoc, getDocs, updateDoc, delet
 
                                     });
 
-
                                     // ====================================================
                                     // JIKA TIDAK ADA FILTER
                                     //
@@ -6934,28 +6902,23 @@ import { getFirestore, collection, onSnapshot, addDoc, getDocs, updateDoc, delet
 
                                     }
 
-
                                     // ====================================================
                                     // DEBUG
                                     // ====================================================
-
                                     console.log(
                                         "Last Stock Map:",
                                         lastStockMap
                                     );
-
 
                                     console.log(
                                         "New SO Map:",
                                         newSOMap
                                     );
 
-
                                     console.log(
                                         "All SO Map:",
                                         allSOMap
                                     );
-
 
                                     // ====================================================
                                     // GENERATE TABLE
@@ -6965,16 +6928,13 @@ import { getFirestore, collection, onSnapshot, addDoc, getDocs, updateDoc, delet
                                     let totalData = 0;
 
                                     materialSnap.forEach(d => {
-
                                         const mat =
                                             d.data();
-
 
                                         const code =
                                             String(
                                                 mat.code || ""
                                             ).trim();
-
 
                                         const name =
                                             String(
@@ -6986,7 +6946,6 @@ import { getFirestore, collection, onSnapshot, addDoc, getDocs, updateDoc, delet
                                             Number(
                                                 mat.average || 0
                                             );
-
 
                                         // =================================================
                                         // LAST STOCK
@@ -7001,14 +6960,12 @@ import { getFirestore, collection, onSnapshot, addDoc, getDocs, updateDoc, delet
                                         const qtyStockAwal =
                                             lastStockMap[code]?.weight || 0;
 
-
                                         // =================================================
                                         // PO
                                         // =================================================
 
                                         const qtyPO =
                                             poMap[code] || 0;
-
 
                                         // =================================================
                                         // PRODUCTION
@@ -7017,7 +6974,6 @@ import { getFirestore, collection, onSnapshot, addDoc, getDocs, updateDoc, delet
                                         const qtyProduksi =
                                             produksiMap[name] || 0;
 
-
                                         // =================================================
                                         // WASTE
                                         // =================================================
@@ -7025,21 +6981,14 @@ import { getFirestore, collection, onSnapshot, addDoc, getDocs, updateDoc, delet
                                         const qtyWaste =
                                             wasteMap[name] || 0;
 
-
                                         // =================================================
                                         // NEW STOCK
                                         // =================================================
-
                                         const qtyStockAkhir =
-
                                             qtyStockAwal
-
                                             + qtyPO
-
                                             - qtyProduksi
-
                                             - qtyWaste;
-
 
                                         // =================================================
                                         // NEW SO
@@ -7050,12 +6999,8 @@ import { getFirestore, collection, onSnapshot, addDoc, getDocs, updateDoc, delet
                                         // FILTER:
                                         //    SO terakhir pada bulan filter
                                         // =================================================
-
                                         let qtySOAkhir = 0;
-
-
                                         if (isFiltered) {
-
                                             qtySOAkhir =
                                                 newSOMap[code]?.weight || 0;
 
@@ -7066,21 +7011,17 @@ import { getFirestore, collection, onSnapshot, addDoc, getDocs, updateDoc, delet
 
                                         }
 
-
                                         // =================================================
                                         // DIFFERENCE
                                         // =================================================
-
                                         const qtySelisih =
-                                            qtyStockAkhir
+                                            qtySOAkhir
                                             -
-                                            qtySOAkhir;
-
+                                            qtyStockAkhir;
 
                                         // =================================================
                                         // VALUE
                                         // =================================================
-
                                         const value =
                                             qtySelisih
                                             *
