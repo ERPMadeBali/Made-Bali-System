@@ -6228,7 +6228,6 @@ import { getFirestore, collection, onSnapshot, addDoc, getDocs, updateDoc, delet
                                     // ====================================================
                                     // GET FILTER
                                     // ====================================================
-
                                     const month =
                                         document.getElementById("stockCardMonth").value;
 
@@ -6254,7 +6253,6 @@ import { getFirestore, collection, onSnapshot, addDoc, getDocs, updateDoc, delet
                                     // ====================================================
                                     // MODE
                                     // ====================================================
-
                                     const isFiltered =
                                         !!(month && year);
 
@@ -6271,7 +6269,6 @@ import { getFirestore, collection, onSnapshot, addDoc, getDocs, updateDoc, delet
                                                 orderBy("code", "asc")
                                             )
                                         );
-
 
                                     // ====================================================
                                     // LOAD STOCK CARD
@@ -6375,14 +6372,12 @@ import { getFirestore, collection, onSnapshot, addDoc, getDocs, updateDoc, delet
                                             : "NO FILTER"
                                     );
 
-
                                     console.log(
                                         "Transaction Period:",
                                         transactionStartDate,
                                         "until",
                                         transactionEndDate
                                     );
-
 
                                     // ====================================================
                                     // LOAD PURCHASE ORDER
@@ -6409,12 +6404,10 @@ import { getFirestore, collection, onSnapshot, addDoc, getDocs, updateDoc, delet
 
                                         );
 
-
                                     const poSnap =
                                         await getDocs(
                                             poQuery
                                         );
-
 
                                     // ====================================================
                                     // LOAD PRODUKSI
@@ -6438,15 +6431,12 @@ import { getFirestore, collection, onSnapshot, addDoc, getDocs, updateDoc, delet
                                                 "<",
                                                 transactionEndDate
                                             )
-
                                         );
-
 
                                     const produksiSnap =
                                         await getDocs(
                                             produksiQuery
                                         );
-
 
                                     // ====================================================
                                     // LOAD PRODUCT RECIPES
@@ -6458,9 +6448,7 @@ import { getFirestore, collection, onSnapshot, addDoc, getDocs, updateDoc, delet
                                                 db,
                                                 "product_recipes"
                                             )
-
                                         );
-
 
                                     // ====================================================
                                     // LOAD PRICE FG
@@ -6502,17 +6490,14 @@ import { getFirestore, collection, onSnapshot, addDoc, getDocs, updateDoc, delet
 
                                         );
 
-
                                     const productionResultSnap =
                                         await getDocs(
                                             productionResultQuery
                                         );
-
-
+                                  
                                     // ====================================================
                                     // LOAD WASTE
                                     // ====================================================
-
                                     const wasteQuery =
                                         query(
 
@@ -6535,12 +6520,10 @@ import { getFirestore, collection, onSnapshot, addDoc, getDocs, updateDoc, delet
 
                                         );
 
-
                                     const wasteSnap =
                                         await getDocs(
                                             wasteQuery
                                         );
-
 
                                     // ====================================================
                                     // LOAD STOCK OPNAME
@@ -6592,7 +6575,6 @@ import { getFirestore, collection, onSnapshot, addDoc, getDocs, updateDoc, delet
                                         }
 
                                     });
-
 
                                     // ====================================================
                                     // PRODUKSI BERDASARKAN RECIPE
@@ -6668,7 +6650,6 @@ import { getFirestore, collection, onSnapshot, addDoc, getDocs, updateDoc, delet
 
                                         }
                                     );
-
 
                                     // ====================================================
                                     // PEMAKAIAN BOX DARI HASIL PRODUKSI
@@ -6761,16 +6742,13 @@ import { getFirestore, collection, onSnapshot, addDoc, getDocs, updateDoc, delet
                                                 Number(
                                                     item.qty || 0
                                                 );
-
                                         }
-
                                     });
 
                                     // ====================================================
                                     // STOCK OPNAME
                                     // ====================================================
                                     soSnap.forEach(d => {
-
                                         const item =
                                             d.data();
 
@@ -6862,19 +6840,12 @@ import { getFirestore, collection, onSnapshot, addDoc, getDocs, updateDoc, delet
                                                 ) {
 
                                                     newSOMap[code] = {
-
                                                         date: soDate,
-
                                                         weight: weight
-
                                                     };
-
                                                 }
-
                                             }
-
                                         }
-
                                     });
 
                                     // ====================================================
@@ -7110,17 +7081,14 @@ import { getFirestore, collection, onSnapshot, addDoc, getDocs, updateDoc, delet
                                     // ====================================================
                                     // UPDATE TABLE
                                     // ====================================================
-
                                     document.getElementById(
                                         "stockCardTable"
                                     ).innerHTML =
                                         html;
 
-
                                     // ====================================================
                                     // TOTAL VALUE
                                     // ====================================================
-
                                     document.getElementById(
                                         "stockCardTotalValue"
                                     ).innerHTML =
@@ -7129,11 +7097,9 @@ import { getFirestore, collection, onSnapshot, addDoc, getDocs, updateDoc, delet
                                             totalValue
                                         );
 
-
                                     // ====================================================
                                     // TOTAL DATA
                                     // ====================================================
-
                                     document.getElementById(
                                         "stockCardTotalData"
                                     ).innerHTML =
@@ -7143,28 +7109,21 @@ import { getFirestore, collection, onSnapshot, addDoc, getDocs, updateDoc, delet
 
 
                                 } catch (err) {
-
                                     console.error(
                                         "StockCard Error:",
                                         err
                                     );
-
-
                                     alert(
                                         "Failed to load Stock Card."
                                     );
-
                                 }
-
                             }
 
                             /* =====================================================
                             PRINT PDF STOCK CARD
                             ===================================================== */
-
                             async function printStockCardPDF() {
                                 const {jsPDF} = window.jspdf;
-
                                 const doc =
                                     new jsPDF(
                                         "landscape",
@@ -7190,13 +7149,11 @@ import { getFirestore, collection, onSnapshot, addDoc, getDocs, updateDoc, delet
                                 // =========================
                                 // GET TABLE DATA
                                 // =========================
-
                                 const rows = [];
                                 const grandTotal =
                                     document.getElementById(
                                         "stockCardTotalValue"
                                     ).innerText;
-
 
                                 document.querySelectorAll(
                                     "#stockCardTable tr"
@@ -7206,7 +7163,6 @@ import { getFirestore, collection, onSnapshot, addDoc, getDocs, updateDoc, delet
                                         tr.querySelectorAll("td");
 
                                     if (cols.length > 0) {
-
                                         rows.push([
 
                                             cols[0].innerText,
@@ -7220,11 +7176,8 @@ import { getFirestore, collection, onSnapshot, addDoc, getDocs, updateDoc, delet
                                             cols[8].innerText,
                                             cols[9].innerText,
                                             cols[10].innerText
-
                                         ]);
-
                                     }
-
                                 });
 
 
@@ -7233,7 +7186,7 @@ import { getFirestore, collection, onSnapshot, addDoc, getDocs, updateDoc, delet
                                 // =========================
                                 doc.setFontSize(16);
                                 doc.text(
-                                    "STOCK CARD BAHAN BAKU WAREHOUSE",
+                                    "STOCK CARD BAHAN BAKU WAREHOUSE MADE BALI",
                                     40,
                                     40
                                 );
@@ -7262,17 +7215,12 @@ import { getFirestore, collection, onSnapshot, addDoc, getDocs, updateDoc, delet
 
                                 };
 
-
                                 if (month && year) {
-
                                     periodeText =
                                         monthNames[month];
-
                                     tahunText =
                                         year;
-
                                 }
-
 
                                 doc.text(
                                     `PERIODE Bulan : ${periodeText}   Tahun : ${tahunText}`,
@@ -7284,7 +7232,6 @@ import { getFirestore, collection, onSnapshot, addDoc, getDocs, updateDoc, delet
                                 // =========================
                                 // PRINT DATE
                                 // =========================
-
                                 const now =
                                     new Date();
 
@@ -7293,18 +7240,15 @@ import { getFirestore, collection, onSnapshot, addDoc, getDocs, updateDoc, delet
                                         "id-ID"
                                     );
 
-
                                 doc.text(
                                     `Print Date : ${printDate}`,
                                     650,
                                     65
                                 );
 
-
                                 // =========================
                                 // TOTAL VALUE
                                 // =========================
-
                                 doc.text(
                                     `Total Value Selisih : ${grandTotal}`,
                                     40,
@@ -7547,19 +7491,19 @@ import { getFirestore, collection, onSnapshot, addDoc, getDocs, updateDoc, delet
                                 monthName.forEach((m, i) => {
 
                                     month.innerHTML += `
-            <option value="${i + 1}">
-                ${m}
-            </option>
-        `;
-                                });
-                                const now = new Date();
-                                for (let y = now.getFullYear() - 3; y <= now.getFullYear() + 2; y++) {
-                                    year.innerHTML += `
-            <option value="${y}">
-                ${y}
-            </option>
-        `;
-                                }
+                                  <option value="${i + 1}">
+                                      ${m}
+                                  </option>
+                              `;
+                                                      });
+                                                      const now = new Date();
+                                                      for (let y = now.getFullYear() - 3; y <= now.getFullYear() + 2; y++) {
+                                                          year.innerHTML += `
+                                  <option value="${y}">
+                                      ${y}
+                                  </option>
+                              `;
+                                 }
                                 month.value = now.getMonth() + 1;
                                 year.value = now.getFullYear();
 
