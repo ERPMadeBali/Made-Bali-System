@@ -4311,8 +4311,9 @@ import { getFirestore, collection, onSnapshot, addDoc, getDocs, updateDoc, delet
                             window.exportReportPDF = exportReportPDF;
 
                             /* ==========PURCHASE REPORT=========== */
-                            let totalPurchasePrice = 0;
                             async function loadPurchasingReport() {
+                                let totalPurchasePrice = 0;
+                              
                                 const start = document.getElementById("reportStartDate").value;
                                 const end = document.getElementById("reportEndDate").value;
 
