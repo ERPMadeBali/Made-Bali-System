@@ -7351,9 +7351,12 @@ import { getFirestore, collection, onSnapshot, addDoc, getDocs, updateDoc, delet
                                 // SAVE PDF
                                 // =========================
 
-                                doc.save(
-                                    "Stock-Card-Warehouse-Made-Bali.pdf"
-                                );
+                                let fileName = "Stock-Card-Warehouse-Made-Bali";
+                                if (month && year) {
+                                    fileName += `-${monthNames[month]}-${year}`;
+                                }
+                                fileName += ".pdf";
+                                doc.save(fileName);
 
                             }
 
